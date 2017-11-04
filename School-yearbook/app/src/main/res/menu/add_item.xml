@@ -2,11 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/add_item"
-        android:title="新增"/>
+        android:title="@string/menu_add"/>
     <item
         android:id="@+id/excel_item"
-        android:title="导出Excel"/>
+        android:title="@string/menu_excel"/>
     <item
         android:id="@+id/photo_item"
-        android:title="导出相册"/>
+        android:title="@string/menu_photo"/>
 </menu>
