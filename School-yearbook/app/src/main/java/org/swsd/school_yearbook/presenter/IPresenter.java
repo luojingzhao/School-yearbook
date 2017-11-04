@@ -1,4 +1,4 @@
-package org.swsd.stardust.presenter;
+package org.swsd.school_yearbook.presenter;
 
 import android.content.Context;
 

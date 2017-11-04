@@ -1,4 +1,4 @@
-package org.swsd.stardust.base;
+package org.swsd.school_yearbook.base;
 
 /**
  * author     :  张昭锡
