@@ -3,7 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/School-yearbook.iml" filepath="$PROJECT_DIR$/School-yearbook.iml" />
+      <module fileurl="file://D:\Document\Code\School-yearbook\School-yearbook\School-yearbook.iml" filepath="D:\Document\Code\School-yearbook\School-yearbook\School-yearbook.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://D:\Document\Code\School-yearbook\School-yearbook\app\app.iml" filepath="D:\Document\Code\School-yearbook\School-yearbook\app\app.iml" />
     </modules>
   </component>
 </project>
