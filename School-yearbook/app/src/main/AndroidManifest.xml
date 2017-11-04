@@ -19,6 +19,5 @@
         <activity android:name=".view.activity.NoteItemActivity"></activity>
 
     </application>
-    
-
 </manifest>
+
