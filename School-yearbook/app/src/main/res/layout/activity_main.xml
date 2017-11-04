@@ -6,7 +6,7 @@
     android:background="#F5F5F5">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/toorbal"
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="#1E90FF"
@@ -31,7 +31,7 @@
                 android:layout_height="40dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginRight="5dp"
-                android:background="@drawable/add"
+                android:background="@mipmap/ic_more"
                 android:layout_gravity="right"/>
         </FrameLayout>
 
@@ -47,14 +47,14 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:orientation="horizontal"
-        android:background="@drawable/boder2">
+        android:background="@drawable/border_main">
 
         <ImageView
             android:id="@+id/iv_search_icon"
             android:layout_width="15dp"
             android:layout_height="15dp"
             android:layout_gravity="center_vertical"
-            android:src="@drawable/search"
+            android:src="@mipmap/ic_search"
             android:layout_marginRight="8dp"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
