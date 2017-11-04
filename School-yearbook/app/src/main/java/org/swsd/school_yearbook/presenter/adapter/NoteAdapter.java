@@ -18,9 +18,24 @@ import java.util.List;
  * version:   :  1.0
  */
 
-public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder>{
+public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder>
+        implements  View.OnLongClickListener{
 
     private List<SchoolyearbookBean> mSchoolyearbookBeanList;
+
+    @Override
+    public boolean onLongClick(View view) {
+        return false;
+    }
+
+    public interface OnItemOnClickListener{
+        void onItemLongOnClick(View view ,int pos);
+    }
+
+    private OnItemOnClickListener mOnItemOnClickListener;
+    public void setOnItemClickListener(OnItemOnClickListener listener){
+        this.mOnItemOnClickListener = listener;
+    }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -30,15 +45,25 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder>{
     }
 
     @Override
-    public void onBindViewHolder(NoteAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(final NoteAdapter.ViewHolder holder, final int position) {
         SchoolyearbookBean schoolyearbookBean = mSchoolyearbookBeanList.get(position);
         holder.noteName.setText(schoolyearbookBean.getName());
+        if(mOnItemOnClickListener!=null){
+            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    mOnItemOnClickListener.onItemLongOnClick(holder.itemView,position);
+                    return false;
+                }
+            });
+        }
     }
 
     @Override
     public int getItemCount() {
         return mSchoolyearbookBeanList.size();
     }
+
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView noteName;
@@ -56,6 +81,10 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder>{
             schoolyearbookBean.setName("zhangsan");
             mSchoolyearbookBeanList.add(schoolyearbookBean);
         }
+    }
+
+    public List<SchoolyearbookBean> getmSchoolyearbookBeanList(){
+        return mSchoolyearbookBeanList;
     }
 
 }
