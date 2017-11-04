@@ -26,4 +26,7 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:26.+'
     testCompile 'junit:junit:4.12'
+
+    //外加依赖项
+    compile 'org.litepal.android:core:1.6.0'
 }
