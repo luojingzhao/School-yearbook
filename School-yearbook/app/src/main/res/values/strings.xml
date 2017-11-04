@@ -11,4 +11,6 @@
     <string name="menu_add">新增</string>
     <string name="menu_excel">导出Eecel</string>
     <string name="menu_photo">导出相册</string>
+    <string name="email_hint">在这里输入群发内容</string>
+    <string name="email_send">群发邮件</string>
 </resources>
