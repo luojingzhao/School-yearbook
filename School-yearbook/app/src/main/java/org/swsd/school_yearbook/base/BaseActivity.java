@@ -47,7 +47,7 @@ public abstract class BaseActivity extends AppCompatActivity{
      * description:  绑定布局
      * version:   :  1.0
      */
-	public abstract int bindLayout();
+	protected abstract int bindLayout();
 
 
     /**
@@ -56,7 +56,7 @@ public abstract class BaseActivity extends AppCompatActivity{
      * description:  初始化控件
      * version:   :  1.0
      */
-	public abstract void initView();
+	protected abstract void initView();
 
     /**
      * author     :  张昭锡
@@ -64,7 +64,7 @@ public abstract class BaseActivity extends AppCompatActivity{
      * description:  初始化数据
      * version:   :  1.0
      */
-    public abstract void initData();
+    protected abstract void initData();
 
 
     @Override
