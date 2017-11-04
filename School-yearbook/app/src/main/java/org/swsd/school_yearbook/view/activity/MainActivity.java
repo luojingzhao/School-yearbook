@@ -62,7 +62,8 @@ public class MainActivity extends AppCompatActivity{
                 showPopupMenu(addImaeView);
             }
         });
-    private void showPopupMenu(ImageView addImaeView) {
+        private void showPopupMenu(ImageView addImaeView) {
+
 
         PopupMenu popupMenu = new PopupMenu(MainActivity.this, addImaeView);
         // View当前PopupMenu显示的相对View的位置
