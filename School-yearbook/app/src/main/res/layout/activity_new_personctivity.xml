@@ -21,7 +21,7 @@
             android:layout_marginLeft="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/contanctName"
+            android:text="@string/note_name"
             />
         <EditText
             android:id="@+id/et_contact_name"
@@ -39,7 +39,7 @@
             android:layout_marginLeft="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/contanctAddress"
+            android:text="@string/note_address"
             />
         <EditText
             android:id="@+id/et_contact_address"
@@ -57,7 +57,7 @@
             android:layout_marginLeft="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/contanctPhone"
+            android:text="@string/note_phone"
             />
         <EditText
             android:id="@+id/et_contact_phone"
@@ -75,7 +75,7 @@
             android:layout_marginLeft="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/contanctWechat"
+            android:text="@string/note_wechat"
             />
         <EditText
             android:id="@+id/et_contact_wechat"
@@ -93,7 +93,7 @@
             android:layout_marginLeft="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/contanctEmail"
+            android:text="@string/note_email"
             />
         <EditText
             android:id="@+id/et_contact_email"
@@ -111,7 +111,7 @@
             android:layout_marginLeft="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/contanctQQ"
+            android:text="@string/note_qq"
             />
         <EditText
             android:id="@+id/et_contact_qq"
@@ -129,7 +129,7 @@
             android:layout_marginLeft="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/contanctAssign"
+            android:text="@string/note_signature"
             />
         <EditText
             android:id="@+id/et_contact_assgin"
