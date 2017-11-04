@@ -30,5 +30,7 @@ dependencies {
 
     //外加依赖项
     compile 'org.litepal.android:core:1.6.0'
+    compile files('libs/jxl.jar')
     compile 'com.android.support:design:26.+'
+
 }

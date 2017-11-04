@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity{
         // menu布局
         popupMenu.getMenuInflater().inflate(R.menu.add_item, popupMenu.getMenu());
 
+
         popupMenu.show();
     }
 }
