@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">School-yearbook</string>
+    <string name="main_title">同学录</string>
+    <string name="note_name">姓名：</string>
+    <string name="note_address">家庭住址：</string>
+    <string name="note_phone">电话：</string>
+    <string name="note_wechat">微信：</string>
+    <string name="note_email">邮箱：</string>
+    <string name="note_qq">QQ：</string>
+    <string name="note_signature">个性签名：</string>
 </resources>

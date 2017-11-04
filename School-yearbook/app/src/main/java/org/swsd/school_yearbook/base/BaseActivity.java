@@ -1,4 +1,4 @@
-package org.swsd.stardust.base;
+package org.swsd.school_yearbook.base;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -29,7 +29,7 @@ public abstract class BaseActivity extends AppCompatActivity{
      * description:  沉浸式状态栏
      * version:   :  1.0
      */
-	private void steepStatusBar() {
+	public void steepStatusBar() {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 
 			// 透明状态栏
@@ -47,7 +47,7 @@ public abstract class BaseActivity extends AppCompatActivity{
      * description:  绑定布局
      * version:   :  1.0
      */
-	public abstract int bindLayout();
+	protected abstract int bindLayout();
 
 
     /**
@@ -56,7 +56,7 @@ public abstract class BaseActivity extends AppCompatActivity{
      * description:  初始化控件
      * version:   :  1.0
      */
-	public abstract void initView();
+	protected abstract void initView();
 
     /**
      * author     :  张昭锡
@@ -64,7 +64,7 @@ public abstract class BaseActivity extends AppCompatActivity{
      * description:  初始化数据
      * version:   :  1.0
      */
-    public abstract void initData();
+    protected abstract void initData();
 
 
     @Override
