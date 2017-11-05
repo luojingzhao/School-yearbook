@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity{
     private ImageView addImaeView;
     private NoteAdapter adapter;
 
+
     private static final String TAG = "MainActivity";
 
     @Override
