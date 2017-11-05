@@ -47,28 +47,6 @@ public class MainActivity extends AppCompatActivity{
 
     //选中的note的email集合
     private List<String> emailList;
-
-
-//    @Override
-//    protected void onCreate(@Nullable Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_main);
-//
-//        recyclerView = (RecyclerView) findViewById(R.id.rv_main);
-//        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-//
-//        recyclerView = (RecyclerView) findViewById(R.id.rv_main);
-//
-//        recyclerView.setLayoutManager(layoutManager);
-//
-//        //测试数据
-//        //initData();
-//
-//        mSchoolyearbooks = DataSupport.findAll(SchoolyearbookBean.class);
-//
-//        adapter = new NoteAdapter(getApplicationContext(), mSchoolyearbooks);
-//    }
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -77,7 +55,6 @@ public class MainActivity extends AppCompatActivity{
         recyclerView.setAdapter(adapter);
 
         Log.d(TAG, "zxzhang" + mSchoolyearbooks.toString() + String.valueOf(mSchoolyearbooks.size()));
-
         //长按监听
         adapter.setOnItemClickListener(new NoteAdapter.OnItemOnClickListener() {
             @Override
@@ -94,7 +71,6 @@ public class MainActivity extends AppCompatActivity{
                 deleteImageView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-
                     }
                 });
             }
@@ -119,7 +95,7 @@ public class MainActivity extends AppCompatActivity{
         emailImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(MainActivity.this, "点击了发送邮件按钮", Toast.LENGTH_SHORT).show();
+                goSendEmailActivity();
             }
         });
 
@@ -141,6 +117,8 @@ public class MainActivity extends AppCompatActivity{
                 showPopupMenu(addImaeView);
             }
         });
+
+
     }
 
     private void showPopupMenu(ImageView addImaeView) {
@@ -156,7 +134,8 @@ public class MainActivity extends AppCompatActivity{
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()){
                     case R.id.add_item:
-                        goAddNewPerson();
+                        /*goAddNewPerson();*/
+                        goSendEmailActivity();
                         break;
                     case R.id.excel_item:
                         Toast.makeText(MainActivity.this, "导出excel成功，请在文件管理器中查看", Toast.LENGTH_SHORT).show();
@@ -176,6 +155,12 @@ public class MainActivity extends AppCompatActivity{
     // 进入到新建同学录界面
     private void goAddNewPerson(){
         Intent intent = new Intent(MainActivity.this,NewPersonActivity.class);
+        startActivity(intent);
+    }
+
+    // 进入群发邮件状态
+    private void goSendEmailActivity(){
+        Intent intent = new Intent(MainActivity.this, SendEmailActivity.class);
         startActivity(intent);
     }
 
@@ -202,6 +187,4 @@ public class MainActivity extends AppCompatActivity{
         //book.setEmail("@zyzhang");
         book.save();
     }
-
-
 }
