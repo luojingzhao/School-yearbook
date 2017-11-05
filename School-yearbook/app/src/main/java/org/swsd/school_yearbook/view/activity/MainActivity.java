@@ -7,16 +7,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.swsd.school_yearbook.R;
 import org.swsd.school_yearbook.presenter.adapter.NoteAdapter;
+
+import java.util.List;
 
 
 /**
@@ -31,6 +35,12 @@ public class MainActivity extends AppCompatActivity{
     private ImageView addImaeView;
     private RecyclerView recyclerView;
     private boolean checkboxflag = false;
+
+    //选中的note的电话集合
+    private List<String> phoneList;
+
+    //选中的note的email集合
+    private List<String> emailList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,20 +57,46 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onItemLongOnClick(View view, int pos) {
                 for(int i = 0; i < recyclerView.getChildCount();  i++){
-                    View view1 = recyclerView.getChildAt(i);
-                    CheckBox checkBox = (CheckBox) view1.findViewById(R.id.cb_note);
+                    final View recyclerViewChildAt = recyclerView.getChildAt(i);
+                    final CheckBox checkBox = (CheckBox) recyclerViewChildAt.findViewById(R.id.cb_note);
                     checkBox.setVisibility(View.VISIBLE);
+
+                    //判断是否选中
+                    checkBox.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            if(checkBox.isChecked()){
+                                TextView nameContent = (TextView) recyclerViewChildAt.findViewById(R.id.tv_note_phone);
+                                TextView emailContent = (TextView) recyclerViewChildAt.findViewById(R.id.tv_note_address);
+                                phoneList.add(nameContent.getText().toString());
+                                emailList.add(emailContent.getText().toString());
+                            }
+                        }
+                    });
                 }
                 checkboxflag = true;
                 FrameLayout frameLayout = (FrameLayout) findViewById(R.id.fl_main);
                 frameLayout.setVisibility(View.VISIBLE);
-                ImageView deleteImageView = (ImageView) findViewById(R.id.iv_delete_icon);
-                deleteImageView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
 
-                    }
-                });
+
+            }
+        });
+
+        //点击email图标事件
+        ImageView emailImageView = (ImageView) findViewById(R.id.iv_main_email);
+        emailImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(MainActivity.this, "点击了发送邮件按钮", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        //点击delete图标事件
+        ImageView deleteImageView = (ImageView) findViewById(R.id.iv_main_delete);
+        deleteImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
             }
         });
 
@@ -79,6 +115,7 @@ public class MainActivity extends AppCompatActivity{
 
         // menu布局
         getMenuInflater().inflate(R.menu.menu, popupMenu.getMenu());
+
         //给菜单绑定监听器
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
