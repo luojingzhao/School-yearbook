@@ -7,13 +7,22 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import org.litepal.crud.DataSupport;
 import org.swsd.school_yearbook.R;
+import org.swsd.school_yearbook.model.bean.SchoolyearbookBean;
+import org.swsd.school_yearbook.presenter.NoteDelete;
 import org.swsd.school_yearbook.presenter.adapter.NoteAdapter;
+
+import java.util.List;
 
 
 /**
@@ -25,17 +34,82 @@ import org.swsd.school_yearbook.presenter.adapter.NoteAdapter;
 
 public class MainActivity extends AppCompatActivity{
 
+    List<SchoolyearbookBean>mSchoolyearbooks;
     private ImageView addImaeView;
+    private RecyclerView recyclerView;
+    private boolean checkboxflag = false;
+    private NoteAdapter adapter;
+
+    private static final String TAG = "MainActivity";
+
+    //选中的note的电话集合
+    private List<String> phoneList;
+
+    //选中的note的email集合
+    private List<String> emailList;
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        adapter = new NoteAdapter(getApplicationContext());
+        recyclerView.setAdapter(adapter);
+
+        Log.d(TAG, "zxzhang" + mSchoolyearbooks.toString() + String.valueOf(mSchoolyearbooks.size()));
+        //长按监听
+        adapter.setOnItemClickListener(new NoteAdapter.OnItemOnClickListener() {
+            @Override
+            public void onItemLongOnClick(View view, int pos) {
+                for(int i = 0; i < recyclerView.getChildCount();  i++){
+                    View view1 = recyclerView.getChildAt(i);
+                    CheckBox checkBox = (CheckBox) view1.findViewById(R.id.cb_note);
+                    checkBox.setVisibility(View.VISIBLE);
+                }
+                checkboxflag = true;
+                FrameLayout frameLayout = (FrameLayout) findViewById(R.id.fl_main);
+                frameLayout.setVisibility(View.VISIBLE);
+                ImageView deleteImageView = (ImageView) findViewById(R.id.iv_main_delete);
+                deleteImageView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                    }
+                });
+            }
+        });
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rv_main);
+        recyclerView = (RecyclerView) findViewById(R.id.rv_main);
         recyclerView.setLayoutManager(layoutManager);
-        NoteAdapter adapter = new NoteAdapter();
-        recyclerView.setAdapter(adapter);
+
+        initData();
+        mSchoolyearbooks = DataSupport.findAll(SchoolyearbookBean.class);
+        adapter = new NoteAdapter(getApplicationContext(), mSchoolyearbooks);
+
+
+        //点击email图标事件
+        ImageView emailImageView = (ImageView) findViewById(R.id.iv_main_email);
+        emailImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goSendEmailActivity();
+            }
+        });
+
+        //点击delete图标事件
+        ImageView deleteImageView = (ImageView) findViewById(R.id.iv_main_delete);
+        deleteImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(MainActivity.this, "点击了删除按钮", Toast.LENGTH_SHORT).show();
+                NoteDelete noteDelete = new NoteDelete(phoneList);
+                onResume();
+            }
+        });
+
         addImaeView = (ImageView) findViewById(R.id.iv_add_icon);
         addImaeView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,6 +117,8 @@ public class MainActivity extends AppCompatActivity{
                 showPopupMenu(addImaeView);
             }
         });
+
+
     }
 
     private void showPopupMenu(ImageView addImaeView) {
@@ -51,6 +127,7 @@ public class MainActivity extends AppCompatActivity{
 
         // menu布局
         getMenuInflater().inflate(R.menu.menu, popupMenu.getMenu());
+
         //给菜单绑定监听器
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
@@ -85,5 +162,29 @@ public class MainActivity extends AppCompatActivity{
     private void goSendEmailActivity(){
         Intent intent = new Intent(MainActivity.this, SendEmailActivity.class);
         startActivity(intent);
+    }
+
+    //重写返回键
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode==KeyEvent.KEYCODE_BACK && checkboxflag == true){
+            for(int i = 0; i < recyclerView.getChildCount();  i++){
+                View view1 = recyclerView.getChildAt(i);
+                CheckBox checkBox = (CheckBox) view1.findViewById(R.id.cb_note);
+                checkBox.setVisibility(View.GONE);
+            }
+            checkboxflag = false;
+            FrameLayout frameLayout = (FrameLayout) findViewById(R.id.fl_main);
+            frameLayout.setVisibility(View.GONE);
+        }else if(keyCode==KeyEvent.KEYCODE_BACK){
+            finish();
+        }
+        return true;
+    }
+
+    public void initData(){
+        SchoolyearbookBean book = new SchoolyearbookBean();
+        book.setName("zyzhang");
+        //book.setEmail("@zyzhang");
+        book.save();
     }
 }

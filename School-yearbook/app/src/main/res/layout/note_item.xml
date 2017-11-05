@@ -10,10 +10,26 @@
         android:background="@drawable/boder">
 
         <!--头像-->
-        <ImageView
-            android:id="@+id/iv_note_header"
-            android:layout_width="50dp"
-            android:layout_height="50dp" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/cb_note"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/iv_note_header"
+                android:layout_width="110dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center" />
+
+        </LinearLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -26,11 +42,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:orientation="horizontal">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="25dp"
-                    android:text="@string/note_name"/>
+                    android:text="@string/note_name" />
 
                 <!--姓名-->
                 <TextView
@@ -40,22 +57,17 @@
 
             </LinearLayout>
 
-            <View
-                android:layout_marginLeft="80dp"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#000000"/>
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
                 android:orientation="horizontal">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/note_address"/>
+                    android:text="@string/note_address" />
 
                 <!--家庭住址-->
                 <TextView
@@ -65,23 +77,18 @@
 
             </LinearLayout>
 
-            <View
-                android:layout_marginLeft="80dp"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#000000"/>
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
                 android:orientation="horizontal">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="25dp"
-                    android:text="@string/note_phone"/>
+                    android:text="@string/note_phone" />
 
                 <!--电话-->
                 <TextView
@@ -91,23 +98,18 @@
 
             </LinearLayout>
 
-            <View
-                android:layout_marginLeft="80dp"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#000000"/>
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
                 android:orientation="horizontal">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="25dp"
-                    android:text="@string/note_wechat"/>
+                    android:text="@string/note_wechat" />
 
                 <!--微信-->
                 <TextView
@@ -117,37 +119,26 @@
 
             </LinearLayout>
 
-            <View
-                android:layout_marginLeft="80dp"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#000000"/>
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
                 android:orientation="horizontal">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="25dp"
-                    android:text="@string/note_email"/>
+                    android:text="@string/note_email" />
 
                 <!--邮箱-->
                 <TextView
-                    android:id="@+id/et_note_email"
+                    android:id="@+id/tv_note_email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
             </LinearLayout>
-
-            <View
-                android:layout_marginLeft="80dp"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#000000"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -155,25 +146,20 @@
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
                 android:orientation="horizontal">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="32dp"
-                    android:text="@string/note_qq"/>
+                    android:text="@string/note_qq" />
 
                 <!--QQ号码-->
                 <TextView
-                    android:id="@+id/et_note_qq"
+                    android:id="@+id/tv_note_qq"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
             </LinearLayout>
-
-            <View
-                android:layout_marginLeft="80dp"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#000000"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -181,25 +167,20 @@
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
                 android:orientation="horizontal">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/note_signature"/>
+                    android:text="@string/note_signature" />
 
                 <!--个性签名-->
                 <TextView
-                    android:id="@+id/et_note_signature"
+                    android:id="@+id/tv_note_signature"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:lines="3" />
 
             </LinearLayout>
-
-            <View
-                android:layout_marginLeft="80dp"
-                android:layout_marginBottom="20dp"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#000000"/>
 
         </LinearLayout>
 
