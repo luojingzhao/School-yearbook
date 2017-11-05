@@ -1,5 +1,7 @@
 package org.swsd.school_yearbook.presenter;
 
+import java.util.List;
+
 /**
  * author     :  骆景钊
  * time       :  2017/11/05
@@ -8,5 +10,5 @@ package org.swsd.school_yearbook.presenter;
  */
 
 public interface IPersenterDelete {
-
+    public void deleteNote();
 }
