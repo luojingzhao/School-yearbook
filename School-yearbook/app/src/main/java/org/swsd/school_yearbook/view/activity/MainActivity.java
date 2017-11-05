@@ -100,14 +100,13 @@ public class MainActivity extends AppCompatActivity{
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 //编辑框内容改变时
                 if(s.length()==0){
-                 //  allList=mainPresenter.getAllList();
-                  //  NoteAdapter adapter = new NoteAdapter(getApplicationContext(),allList);
-                   //recyclerView.setAdapter(adapter);
+                    allList=mainPresenter.getAllList();
+                    NoteAdapter adapter = new NoteAdapter(getApplicationContext(),allList);
+                    recyclerView.setAdapter(adapter);
                 }else{
-                    Toast.makeText(MainActivity.this,s, Toast.LENGTH_SHORT).show();
-                    //selectedList=mainPresenter.toSelect(s.toString());
-                    //NoteAdapter adapter = new NoteAdapter(getApplicationContext(),selectedList);
-                    //recyclerView.setAdapter(adapter);
+                    selectedList=mainPresenter.toSelect(s.toString());
+                    NoteAdapter adapter = new NoteAdapter(getApplicationContext(),selectedList);
+                    recyclerView.setAdapter(adapter);
                 }
             }
 
@@ -115,14 +114,13 @@ public class MainActivity extends AppCompatActivity{
             public void afterTextChanged(Editable s) {
                 //编辑框内容改变后
                 if(s.length()==0){
-                    //  allList=mainPresenter.getAllList();
-                    //  NoteAdapter adapter = new NoteAdapter(getApplicationContext(),allList);
-                    //recyclerView.setAdapter(adapter);
+                    allList=mainPresenter.getAllList();
+                    NoteAdapter adapter = new NoteAdapter(getApplicationContext(),allList);
+                    recyclerView.setAdapter(adapter);
                 }else{
-                    Toast.makeText(MainActivity.this,s, Toast.LENGTH_SHORT).show();
-                    //selectedList=mainPresenter.toSelect(s.toString());
-                    //NoteAdapter adapter = new NoteAdapter(getApplicationContext(),selectedList);
-                    //recyclerView.setAdapter(adapter);
+                    selectedList=mainPresenter.toSelect(s.toString());
+                    NoteAdapter adapter = new NoteAdapter(getApplicationContext(),selectedList);
+                    recyclerView.setAdapter(adapter);
                 }
 
             }

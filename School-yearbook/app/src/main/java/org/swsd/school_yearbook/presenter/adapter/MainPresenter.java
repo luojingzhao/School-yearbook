@@ -19,9 +19,8 @@ import java.util.List;
 
 public class MainPresenter implements IPresenter{
     public  List<SchoolyearbookBean> getAllList(){
-       // totallists= DataSupport.findAll(SchoolyearbookBean.class);
         List<SchoolyearbookBean>totalList=new ArrayList<>();
-
+        totalList= DataSupport.findAll(SchoolyearbookBean.class);
         return totalList;
     }
 

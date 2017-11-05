@@ -162,9 +162,34 @@ public class NewPersonActivity extends AppCompatActivity {
     //显示图片
     private void displayImage(String imagePath){
         if(imagePath!=null){
-            Bitmap bitmap= BitmapFactory.decodeFile(imagePath);
-            ImageView picture=new ImageView(this);
+            BitmapFactory.Options options = new BitmapFactory.Options();//解析位图的附加条件
+            options.inJustDecodeBounds = true;// 不去解析位图，只获取位图头文件信息
+            Bitmap bitmap= BitmapFactory.decodeFile(imagePath,options);
+            ImageView picture;
+            picture=(ImageView) findViewById(R.id.person_photo);
             picture.setImageBitmap(bitmap);
+            int btwidth = options.outWidth;//获取图片的宽度
+            int btheight = options.outHeight;//获取图片的高度
+
+            int dx = btwidth/200;//获取水平方向的缩放比例
+            int dy = btheight/200;//获取垂直方向的缩放比例
+
+            int s = 1;//设置默认缩放比例
+
+            //如果是水平方向
+            if (dx>dy&&dy>1) {
+                s = dx;
+            }
+
+            //如果是垂直方向
+            if (dy>dx&&dx>1) {
+                s = dy;
+            }
+            options.inSampleSize = s;//设置图片缩放比例
+            options.inJustDecodeBounds = false;//真正解析位图
+            //把图片的解析条件options在创建的时候带上
+            bitmap = BitmapFactory.decodeFile(imagePath, options);
+            picture.setImageBitmap(bitmap);//设置图片
         }else{
             Toast.makeText(this,"failed to get image",Toast.LENGTH_SHORT).show();
         }
