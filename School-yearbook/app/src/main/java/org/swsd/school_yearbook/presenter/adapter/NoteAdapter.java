@@ -86,7 +86,6 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder>
             @Override
             public void onClick(View v) {
                 int position = holder.getAdapterPosition();
-
                 SchoolyearbookBean book = mSchoolyearbookList.get(position);
 
                 int id = book.getId();
@@ -109,8 +108,6 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder>
                 mContext.startActivity(intent);
             }
         });
-
-
         return holder;
     }
 
