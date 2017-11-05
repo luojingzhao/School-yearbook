@@ -1,14 +1,11 @@
 package org.swsd.school_yearbook.presenter;
 
 import android.os.Environment;
-import android.util.Log;
-import android.widget.Toast;
 
 import org.litepal.crud.DataSupport;
 import org.swsd.school_yearbook.model.bean.SchoolyearbookBean;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -35,10 +32,10 @@ public class ExcelPresenter {
      * description:  数据库内容写入Excel
      * version:   :  1.0
      */
-    void writeExcel(String path) throws WriteException,IOException {
+    void writeExcel(String dirName) throws WriteException,IOException {
 
 
-        String filepath = Environment.getExternalStorageDirectory() + path;
+        String filepath = Environment.getExternalStorageDirectory() + dirName;
         File appDir = new File(filepath);
 
         if (!appDir.exists()) {
