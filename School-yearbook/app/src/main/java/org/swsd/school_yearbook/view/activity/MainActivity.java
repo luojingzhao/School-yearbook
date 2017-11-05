@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import org.swsd.school_yearbook.R;
+import org.swsd.school_yearbook.presenter.NoteDelete;
 import org.swsd.school_yearbook.presenter.adapter.NoteAdapter;
 import java.util.List;
 
@@ -32,6 +33,7 @@ public class MainActivity extends AppCompatActivity{
     private ImageView addImaeView;
     private RecyclerView recyclerView;
     private boolean checkboxflag = false;
+    private NoteAdapter adapter;
 
     //选中的note的电话集合
     private List<String> phoneList;
@@ -39,6 +41,13 @@ public class MainActivity extends AppCompatActivity{
     //选中的note的email集合
     private List<String> emailList;
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        emailList.clear();
+        NoteAdapter adapter = new NoteAdapter();
+        recyclerView.setAdapter(adapter);
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,7 +56,7 @@ public class MainActivity extends AppCompatActivity{
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView = (RecyclerView) findViewById(R.id.rv_main);
         recyclerView.setLayoutManager(layoutManager);
-        NoteAdapter adapter = new NoteAdapter();
+        adapter = new NoteAdapter();
         recyclerView.setAdapter(adapter);
 
         //长按监听
@@ -93,6 +102,9 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 Toast.makeText(MainActivity.this, "点击了删除按钮", Toast.LENGTH_SHORT).show();
+                NoteDelete noteDelete = new NoteDelete(phoneList);
+                adapter = new NoteAdapter();
+                phoneList.clear();
             }
         });
 
@@ -157,4 +169,6 @@ public class MainActivity extends AppCompatActivity{
         }
         return true;
     }
+
+
 }
