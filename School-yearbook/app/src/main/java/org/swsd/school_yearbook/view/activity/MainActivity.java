@@ -6,6 +6,7 @@
  */
 package org.swsd.school_yearbook.view.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -14,13 +15,17 @@ import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
+
 import org.swsd.school_yearbook.R;
 import org.swsd.school_yearbook.model.bean.SchoolyearbookBean;
 import org.swsd.school_yearbook.presenter.adapter.MainPresenter;
 import org.swsd.school_yearbook.presenter.adapter.NoteAdapter;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,6 +46,7 @@ public class MainActivity extends AppCompatActivity{
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         recyclerView = (RecyclerView) findViewById(R.id.rv_main);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
@@ -81,18 +87,39 @@ public class MainActivity extends AppCompatActivity{
             }
         });}
 
-        private void showPopupMenu(ImageView addImageView) {
 
-
-        PopupMenu popupMenu = new PopupMenu(MainActivity.this, addImageView);
+    private void showPopupMenu(ImageView addImaeView) {
         // View当前PopupMenu显示的相对View的位置
+        PopupMenu popupMenu = new PopupMenu(MainActivity.this, addImaeView);
 
         // menu布局
         getMenuInflater().inflate(R.menu.menu, popupMenu.getMenu());
         //给菜单绑定监听器
-       // popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.add_item:
+                        goAddNewPerson();
+                        break;
+                    case R.id.excel_item:
+                        Toast.makeText(MainActivity.this, "导出excel成功，请在文件管理器中查看", Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.photo_item:
+                        Toast.makeText(MainActivity.this, "导出jpg成功，请在文件管理器中查看", Toast.LENGTH_SHORT).show();
+                        break;
+                    default:
+                        break;
+                }
+                return false;
+            }
+        });
+        popupMenu.show();
+    }
 
-        //});
-
+    // 进入到新建同学录界面
+    private void goAddNewPerson(){
+        Intent intent = new Intent(MainActivity.this,NewPersonActivity.class);
+        startActivity(intent);
     }
 }
