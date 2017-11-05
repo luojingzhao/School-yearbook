@@ -22,10 +22,6 @@ public class SchoolyearbookBean extends DataSupport implements Serializable {
     private String signature;
     private String avatarPath;
 
-    public SchoolyearbookBean(){
-
-    }
-
     public SchoolyearbookBean(int id,String name,String address,String phone,String wechat,
                               String email, String qq,String signature){
         this.id = id;

@@ -19,19 +19,6 @@ import java.util.List;
 
 public class MainPresenter implements IPresenter{
     public  List<SchoolyearbookBean> getAllList(){
-      List<SchoolyearbookBean>totallists=new ArrayList<>();
-        for(int i = 0; i < 3; i++){
-            SchoolyearbookBean schoolyearbookBean = new SchoolyearbookBean();
-            schoolyearbookBean.setName("zhangsan");
-            schoolyearbookBean.setAddress("zhangsan");
-            schoolyearbookBean.setEmail("zhangsan");
-            schoolyearbookBean.setPhone("zhangsan");
-            schoolyearbookBean.setQq("zhangsan");
-            schoolyearbookBean.setWechat("zhangsan");
-            schoolyearbookBean.setSignature("zhangsan");
-            totallists.add(schoolyearbookBean);
-        }
-
        // totallists= DataSupport.findAll(SchoolyearbookBean.class);
         List<SchoolyearbookBean>totalList=new ArrayList<>();
 
@@ -44,16 +31,13 @@ public class MainPresenter implements IPresenter{
         List<SchoolyearbookBean>nameList= DataSupport.select("name").find(SchoolyearbookBean.class);
         List<SchoolyearbookBean>schoolyearbookBeanList=new ArrayList<>();
 
-        for(SchoolyearbookBean schoolyearbook: nameList){
-            if(schoolyearbook.getName().toString()==string){
-                SchoolyearbookBean schoolyearbookBean = new SchoolyearbookBean();
-                schoolyearbookBean.setName(string);
-                schoolyearbookBean.setAddress(schoolyearbook.getAddress());
-                schoolyearbookBean.setEmail(schoolyearbook.getEmail());
-                schoolyearbookBean.setPhone(schoolyearbook.getPhone());
-                schoolyearbookBean.setQq(schoolyearbook.getQq());
-                schoolyearbookBean.setWechat(schoolyearbook.getWechat());
-                schoolyearbookBean.setSignature(schoolyearbook.getSignature());
+        for(SchoolyearbookBean syb: nameList){
+            if(syb.getName().toString()==string){
+                SchoolyearbookBean schoolyearbookBean =
+                        new SchoolyearbookBean(syb.getId(),syb.getName(),
+                                syb.getAddress(), syb.getPhone(),syb.getWechat(),
+                                syb.getEmail(),syb.getQq(),syb.getSignature());
+
                 schoolyearbookBeanList.add(schoolyearbookBean);
             }
         }

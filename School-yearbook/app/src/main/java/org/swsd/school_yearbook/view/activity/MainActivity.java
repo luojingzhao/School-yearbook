@@ -95,23 +95,35 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 //编辑框内容改变前
-
             }
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 //编辑框内容改变时
                 if(s.length()==0){
-
+                 //  allList=mainPresenter.getAllList();
+                  //  NoteAdapter adapter = new NoteAdapter(getApplicationContext(),allList);
+                   //recyclerView.setAdapter(adapter);
                 }else{
-                    selectedList=mainPresenter.toSelect(s.toString());
-                    NoteAdapter adapter = new NoteAdapter(getApplicationContext(),selectedList);
-                    recyclerView.setAdapter(adapter);
+                    Toast.makeText(MainActivity.this,s, Toast.LENGTH_SHORT).show();
+                    //selectedList=mainPresenter.toSelect(s.toString());
+                    //NoteAdapter adapter = new NoteAdapter(getApplicationContext(),selectedList);
+                    //recyclerView.setAdapter(adapter);
                 }
             }
 
             @Override
             public void afterTextChanged(Editable s) {
                 //编辑框内容改变后
+                if(s.length()==0){
+                    //  allList=mainPresenter.getAllList();
+                    //  NoteAdapter adapter = new NoteAdapter(getApplicationContext(),allList);
+                    //recyclerView.setAdapter(adapter);
+                }else{
+                    Toast.makeText(MainActivity.this,s, Toast.LENGTH_SHORT).show();
+                    //selectedList=mainPresenter.toSelect(s.toString());
+                    //NoteAdapter adapter = new NoteAdapter(getApplicationContext(),selectedList);
+                    //recyclerView.setAdapter(adapter);
+                }
 
             }
         });}
@@ -163,7 +175,7 @@ public class MainActivity extends AppCompatActivity{
             checkboxflag = false;
             FrameLayout frameLayout = (FrameLayout) findViewById(R.id.fl_main);
             frameLayout.setVisibility(View.GONE);
-        }else {
+        }else if (keyCode==KeyEvent.KEYCODE_BACK){
             finish();
         }
         return true;
