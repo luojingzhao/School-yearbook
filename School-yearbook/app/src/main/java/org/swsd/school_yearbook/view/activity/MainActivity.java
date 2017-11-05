@@ -62,17 +62,6 @@ public class MainActivity extends AppCompatActivity{
                 //编辑框内容改变前
 
             }
-        });
-        private void showPopupMenu(ImageView addImaeView) {
-
-
-        PopupMenu popupMenu = new PopupMenu(MainActivity.this, addImaeView);
-        // View当前PopupMenu显示的相对View的位置
-
-        // menu布局
-        getMenuInflater().inflate(R.menu.menu, popupMenu.getMenu());
-        //给菜单绑定监听器
-        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 //编辑框内容改变时
@@ -90,18 +79,20 @@ public class MainActivity extends AppCompatActivity{
                 //编辑框内容改变后
 
             }
-        });
+        });}
 
-    }
+        private void showPopupMenu(ImageView addImageView) {
 
-    private void showPopupMenu(ImageView addImageView) {
 
+        PopupMenu popupMenu = new PopupMenu(MainActivity.this, addImageView);
         // View当前PopupMenu显示的相对View的位置
-        PopupMenu popupMenu = new PopupMenu(this, addImageView);
 
         // menu布局
-        popupMenu.getMenuInflater().inflate(R.menu.add_item, popupMenu.getMenu());
+        getMenuInflater().inflate(R.menu.menu, popupMenu.getMenu());
+        //给菜单绑定监听器
+       // popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
 
-        popupMenu.show();
+        //});
+
     }
 }
