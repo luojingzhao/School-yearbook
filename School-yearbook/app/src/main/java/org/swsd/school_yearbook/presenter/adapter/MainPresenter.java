@@ -35,17 +35,6 @@ public class MainPresenter implements IPresenter{
        // totallists= DataSupport.findAll(SchoolyearbookBean.class);
         List<SchoolyearbookBean>totalList=new ArrayList<>();
 
-        for(SchoolyearbookBean schoolyearbooks: totallists) {
-            SchoolyearbookBean schoolyearbookBean = new SchoolyearbookBean();
-            schoolyearbookBean.setName(schoolyearbooks.getName());
-            schoolyearbookBean.setAddress(schoolyearbooks.getAddress());
-            schoolyearbookBean.setEmail(schoolyearbooks.getEmail());
-            schoolyearbookBean.setPhone(schoolyearbooks.getPhone());
-            schoolyearbookBean.setQq(schoolyearbooks.getQq());
-            schoolyearbookBean.setWechat(schoolyearbooks.getWechat());
-            schoolyearbookBean.setSignature(schoolyearbooks.getSignature());
-            totalList.add(schoolyearbookBean);
-        }
         return totalList;
     }
 

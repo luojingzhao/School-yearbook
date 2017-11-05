@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity{
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         allList=mainPresenter.getAllList();
-        NoteAdapter adapter = new NoteAdapter(allList);
+        NoteAdapter adapter = new NoteAdapter(getApplicationContext(),allList);
         recyclerView.setAdapter(adapter);
         addImageView = (ImageView) findViewById(R.id.iv_add_icon);
         addImageView.setOnClickListener(new View.OnClickListener() {
@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity{
 
                 }else{
                     selectedList=mainPresenter.toSelect(s.toString());
-                    NoteAdapter adapter = new NoteAdapter(selectedList);
+                    NoteAdapter adapter = new NoteAdapter(getApplicationContext(),selectedList);
                     recyclerView.setAdapter(adapter);
                 }
             }
@@ -117,9 +117,9 @@ public class MainActivity extends AppCompatActivity{
         });}
 
 
-    private void showPopupMenu(ImageView addImaeView) {
+    private void showPopupMenu(ImageView addImageView) {
         // View当前PopupMenu显示的相对View的位置
-        PopupMenu popupMenu = new PopupMenu(MainActivity.this, addImaeView);
+        PopupMenu popupMenu = new PopupMenu(MainActivity.this, addImageView);
 
         // menu布局
         getMenuInflater().inflate(R.menu.menu, popupMenu.getMenu());
@@ -157,7 +157,7 @@ public class MainActivity extends AppCompatActivity{
         if (keyCode==KeyEvent.KEYCODE_BACK && checkboxflag == true){
             for(int i = 0; i < recyclerView.getChildCount();  i++){
                 View view1 = recyclerView.getChildAt(i);
-                CheckBox checkBox = (CheckBox) view1.findViewById(R.id.cb_note);
+                CheckBox checkBox = view1.findViewById(R.id.cb_note);
                 checkBox.setVisibility(View.GONE);
             }
             checkboxflag = false;
