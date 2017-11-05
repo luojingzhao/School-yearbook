@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,10 +15,8 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import org.swsd.school_yearbook.R;
 import org.swsd.school_yearbook.presenter.adapter.NoteAdapter;
-
 import java.util.List;
 
 
@@ -41,6 +38,7 @@ public class MainActivity extends AppCompatActivity{
 
     //选中的note的email集合
     private List<String> emailList;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -77,8 +75,6 @@ public class MainActivity extends AppCompatActivity{
                 checkboxflag = true;
                 FrameLayout frameLayout = (FrameLayout) findViewById(R.id.fl_main);
                 frameLayout.setVisibility(View.VISIBLE);
-
-
             }
         });
 
@@ -96,7 +92,7 @@ public class MainActivity extends AppCompatActivity{
         deleteImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Toast.makeText(MainActivity.this, "点击了删除按钮", Toast.LENGTH_SHORT).show();
             }
         });
 
