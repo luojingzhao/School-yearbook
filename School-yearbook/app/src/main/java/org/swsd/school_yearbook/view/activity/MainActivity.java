@@ -19,10 +19,14 @@ import android.widget.Toast;
 import org.litepal.crud.DataSupport;
 import org.swsd.school_yearbook.R;
 import org.swsd.school_yearbook.model.bean.SchoolyearbookBean;
+import org.swsd.school_yearbook.presenter.ExcelPresenter;
 import org.swsd.school_yearbook.presenter.NoteDelete;
 import org.swsd.school_yearbook.presenter.adapter.NoteAdapter;
 
+import java.io.IOException;
 import java.util.List;
+
+import jxl.write.WriteException;
 
 
 /**
@@ -106,7 +110,7 @@ public class MainActivity extends AppCompatActivity{
             public void onClick(View view) {
                 Toast.makeText(MainActivity.this, "点击了删除按钮", Toast.LENGTH_SHORT).show();
                 NoteDelete noteDelete = new NoteDelete(phoneList);
-                onResume();
+                //onResume();
             }
         });
 
@@ -134,11 +138,10 @@ public class MainActivity extends AppCompatActivity{
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()){
                     case R.id.add_item:
-                        /*goAddNewPerson();*/
-                        goSendEmailActivity();
+                        goAddNewPerson();
                         break;
                     case R.id.excel_item:
-                        Toast.makeText(MainActivity.this, "导出excel成功，请在文件管理器中查看", Toast.LENGTH_SHORT).show();
+                        exportExcel();
                         break;
                     case R.id.photo_item:
                         Toast.makeText(MainActivity.this, "导出jpg成功，请在文件管理器中查看", Toast.LENGTH_SHORT).show();
@@ -186,5 +189,17 @@ public class MainActivity extends AppCompatActivity{
         book.setName("zyzhang");
         //book.setEmail("@zyzhang");
         book.save();
+    }
+
+    // 导出excel
+    private void exportExcel(){
+        try {
+            ExcelPresenter.writeExcel("StartDust");
+            Toast.makeText(MainActivity.this, "导出excel成功，请在文件管理器中查看", Toast.LENGTH_SHORT).show();
+        } catch (WriteException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

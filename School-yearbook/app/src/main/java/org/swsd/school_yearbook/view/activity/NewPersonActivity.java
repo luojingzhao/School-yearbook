@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import org.swsd.school_yearbook.R;
+import org.swsd.school_yearbook.model.bean.SchoolyearbookBean;
 
 
 public class NewPersonActivity extends AppCompatActivity {
@@ -37,7 +38,6 @@ public class NewPersonActivity extends AppCompatActivity {
 
     private void addNewPerson(){
         insertYearBook();
-        Toast.makeText(this, "添加成功", Toast.LENGTH_SHORT).show();
     }
 
     private void insertYearBook(){
@@ -65,18 +65,25 @@ public class NewPersonActivity extends AppCompatActivity {
         wechat = eT_wechat.getText().toString();
         email = eT_email.getText().toString();
         signature = eT_signature.getText().toString();
+        qq = eT_qq.getText().toString();
 
         //测试
-        if(name.equals("")){
-            Toast.makeText(this,"姓名为空", Toast.LENGTH_SHORT).show();
+        if(!name.equals("") && isMobil(phone) && isEmail(email)){
+            SchoolyearbookBean person = new SchoolyearbookBean();
+            person.setName(name);
+            person.setAddress(address);
+            person.setPhone(phone);
+            person.setWechat(wechat);
+            person.setSignature(signature);
+            person.setQq(qq);
+            person.setEmail(email);
+            person.save();
+            Toast.makeText(this, "保存数据成功", Toast.LENGTH_SHORT).show();
+            finish();
         }
-        if(!isMobil(phone)) {
-            Toast.makeText(this, "不是电话", Toast.LENGTH_SHORT).show();
+        else{
+            Toast.makeText(this, "请检查姓名，邮箱，电话是否合法！", Toast.LENGTH_SHORT).show();
         }
-        if(!isEmail(email)){
-            Toast.makeText(this, "不是邮箱", Toast.LENGTH_SHORT).show();
-        }
-
     }
 
     // 手机验证
