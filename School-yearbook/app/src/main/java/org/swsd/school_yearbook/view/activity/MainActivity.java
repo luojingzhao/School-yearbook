@@ -44,18 +44,7 @@ public class MainActivity extends AppCompatActivity{
     @Override
     protected void onResume() {
         super.onResume();
-        emailList.clear();
-        NoteAdapter adapter = new NoteAdapter();
-        recyclerView.setAdapter(adapter);
-    }
-
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        recyclerView = (RecyclerView) findViewById(R.id.rv_main);
-        recyclerView.setLayoutManager(layoutManager);
+//        emailList.clear();
         adapter = new NoteAdapter();
         recyclerView.setAdapter(adapter);
 
@@ -86,6 +75,15 @@ public class MainActivity extends AppCompatActivity{
                 frameLayout.setVisibility(View.VISIBLE);
             }
         });
+    }
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView = (RecyclerView) findViewById(R.id.rv_main);
+        recyclerView.setLayoutManager(layoutManager);
 
         //点击email图标事件
         ImageView emailImageView = (ImageView) findViewById(R.id.iv_main_email);
@@ -103,8 +101,8 @@ public class MainActivity extends AppCompatActivity{
             public void onClick(View view) {
                 Toast.makeText(MainActivity.this, "点击了删除按钮", Toast.LENGTH_SHORT).show();
                 NoteDelete noteDelete = new NoteDelete(phoneList);
-                adapter = new NoteAdapter();
-                phoneList.clear();
+                onResume();
+//                phoneList.clear();
             }
         });
 
@@ -164,7 +162,7 @@ public class MainActivity extends AppCompatActivity{
             checkboxflag = false;
             FrameLayout frameLayout = (FrameLayout) findViewById(R.id.fl_main);
             frameLayout.setVisibility(View.GONE);
-        }else {
+        }else if(keyCode==KeyEvent.KEYCODE_BACK){
             finish();
         }
         return true;
