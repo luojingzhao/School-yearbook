@@ -12,11 +12,11 @@ import org.swsd.school_yearbook.R;
 public class NewPersonActivity extends AppCompatActivity {
 
     private FloatingActionButton btnAddNewPerson;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_person);
-
         btnAddNewPerson = (FloatingActionButton) findViewById(R.id.add_new_person);
         btnAddNewPerson.setOnClickListener(new View.OnClickListener() {
             @Override
