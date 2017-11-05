@@ -1,7 +1,5 @@
 package org.swsd.school_yearbook.model.bean;
 
-import org.litepal.crud.DataSupport;
-
 /**
  * author     :  张昭锡
  * time       :  2017/11/04
@@ -9,7 +7,7 @@ import org.litepal.crud.DataSupport;
  * version:   :  1.0
  */
 
-public class SchoolyearbookBean extends DataSupport{
+public class SchoolyearbookBean{
     private int id;
     private String name;
     private String address;
