@@ -7,17 +7,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import org.litepal.crud.DataSupport;
 import org.swsd.school_yearbook.R;
+import org.swsd.school_yearbook.model.bean.SchoolyearbookBean;
 import org.swsd.school_yearbook.presenter.NoteDelete;
 import org.swsd.school_yearbook.presenter.adapter.NoteAdapter;
+
 import java.util.List;
 
 
@@ -30,10 +34,13 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity{
 
+    List<SchoolyearbookBean>mSchoolyearbooks;
     private ImageView addImaeView;
     private RecyclerView recyclerView;
     private boolean checkboxflag = false;
     private NoteAdapter adapter;
+
+    private static final String TAG = "MainActivity";
 
     //选中的note的电话集合
     private List<String> phoneList;
@@ -41,49 +48,54 @@ public class MainActivity extends AppCompatActivity{
     //选中的note的email集合
     private List<String> emailList;
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        emailList.clear();
-        NoteAdapter adapter = new NoteAdapter();
-        recyclerView.setAdapter(adapter);
-    }
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+////        emailList.clear();
+////        NoteAdapter adapter = new NoteAdapter();
+////        recyclerView.setAdapter(adapter);
+//    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+
         recyclerView = (RecyclerView) findViewById(R.id.rv_main);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+
+        recyclerView = (RecyclerView) findViewById(R.id.rv_main);
+
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new NoteAdapter();
+
+        initData();
+
+        mSchoolyearbooks = DataSupport.findAll(SchoolyearbookBean.class);
+
+        adapter = new NoteAdapter(getApplicationContext(),mSchoolyearbooks);
         recyclerView.setAdapter(adapter);
+
+        Log.d(TAG, "zxzhang" + mSchoolyearbooks.toString() + String.valueOf(mSchoolyearbooks.size()));
 
         //长按监听
         adapter.setOnItemClickListener(new NoteAdapter.OnItemOnClickListener() {
             @Override
             public void onItemLongOnClick(View view, int pos) {
                 for(int i = 0; i < recyclerView.getChildCount();  i++){
-                    final View recyclerViewChildAt = recyclerView.getChildAt(i);
-                    final CheckBox checkBox = (CheckBox) recyclerViewChildAt.findViewById(R.id.cb_note);
+                    View view1 = recyclerView.getChildAt(i);
+                    CheckBox checkBox = (CheckBox) view1.findViewById(R.id.cb_note);
                     checkBox.setVisibility(View.VISIBLE);
-
-                    //判断是否选中
-                    checkBox.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            if(checkBox.isChecked()){
-                                TextView nameContent = (TextView) recyclerViewChildAt.findViewById(R.id.tv_note_phone);
-                                TextView emailContent = (TextView) recyclerViewChildAt.findViewById(R.id.tv_note_address);
-                                phoneList.add(nameContent.getText().toString());
-                                emailList.add(emailContent.getText().toString());
-                            }
-                        }
-                    });
                 }
                 checkboxflag = true;
                 FrameLayout frameLayout = (FrameLayout) findViewById(R.id.fl_main);
                 frameLayout.setVisibility(View.VISIBLE);
+                ImageView deleteImageView = (ImageView) findViewById(R.id.iv_main_delete);
+                deleteImageView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                });
             }
         });
 
@@ -102,9 +114,10 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 Toast.makeText(MainActivity.this, "点击了删除按钮", Toast.LENGTH_SHORT).show();
-                NoteDelete noteDelete = new NoteDelete(phoneList);
-                adapter = new NoteAdapter();
-                phoneList.clear();
+                //NoteDelete noteDelete = new NoteDelete(phoneList);
+
+                //adapter = new NoteAdapter(getApplicationContext(),);
+                //phoneList.clear();
             }
         });
 
@@ -168,6 +181,13 @@ public class MainActivity extends AppCompatActivity{
             finish();
         }
         return true;
+    }
+
+    public void initData(){
+        SchoolyearbookBean book = new SchoolyearbookBean();
+        book.setName("zyzhang");
+        //book.setEmail("@zyzhang");
+        book.save();
     }
 
 
