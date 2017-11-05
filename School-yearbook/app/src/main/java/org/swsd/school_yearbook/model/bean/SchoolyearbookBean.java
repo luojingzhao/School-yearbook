@@ -11,7 +11,7 @@ import java.io.Serializable;
  * version:   :  1.0
  */
 
-public class SchoolyearbookBean extends DataSupport implements Serializable {
+public class SchoolyearbookBean extends DataSupport implements Serializable{
     private int id;
     private String name;
     private String address;
@@ -34,6 +34,9 @@ public class SchoolyearbookBean extends DataSupport implements Serializable {
         this.signature = signature;
     }
 
+    public SchoolyearbookBean(){
+
+    }
     public int getId() {
         return id;
     }

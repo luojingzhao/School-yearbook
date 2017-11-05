@@ -29,9 +29,18 @@ public class MainPresenter implements IPresenter{
         //获取数据库中的姓名
         List<SchoolyearbookBean>nameList= DataSupport.select("name").find(SchoolyearbookBean.class);
         List<SchoolyearbookBean>schoolyearbookBeanList=new ArrayList<>();
-
         for(SchoolyearbookBean syb: nameList){
-            if(syb.getName().toString()==string){
+            int lenth=string.length();
+            String nameString=syb.getName().toString();
+            if(nameString.length()<lenth){
+                lenth=nameString.length();
+            }
+            char[] nameArry=nameString.toCharArray();
+            String str="";
+            for(int i=0;i<lenth;i++){
+                str+=nameArry[i];
+            }
+            if(str.equals(string.toString())){
                 SchoolyearbookBean schoolyearbookBean =
                         new SchoolyearbookBean(syb.getId(),syb.getName(),
                                 syb.getAddress(), syb.getPhone(),syb.getWechat(),

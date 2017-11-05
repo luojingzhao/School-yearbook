@@ -1,9 +1,4 @@
-/**
- * author     :  胡俊钦
- * time       :  2017/11/04
- * description:  RecyclerView在界面上的实现，title加号的点击实现，搜索栏的实现
- * version:   :  1.0
- */
+
 package org.swsd.school_yearbook.view.activity;
 
 import android.content.Intent;
@@ -15,6 +10,7 @@ import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,18 +20,29 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import org.litepal.crud.DataSupport;
 import org.swsd.school_yearbook.R;
 import org.swsd.school_yearbook.model.bean.SchoolyearbookBean;
+import org.swsd.school_yearbook.presenter.NoteDelete;
 import org.swsd.school_yearbook.presenter.adapter.MainPresenter;
 import org.swsd.school_yearbook.presenter.adapter.NoteAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * author     :  骆景钊
+ * time       :  2017/11/04
+ * description:  RecyclerView在界面上的实现，title加号的点击实现
+ * version:   :  1.0
+ */
+
 public class MainActivity extends AppCompatActivity{
 
-    private ImageView addImageView;
-    private EditText et_search;
+    List<SchoolyearbookBean>mSchoolyearbooks;
+    private ImageView addImaeView;
+
     private RecyclerView recyclerView;
     private LinearLayoutManager layoutManager;
     //存放所有数据的List
@@ -45,27 +52,26 @@ public class MainActivity extends AppCompatActivity{
     //MainPresenter对象，用于与View进行交互
     MainPresenter mainPresenter=new MainPresenter();
     private boolean checkboxflag = false;
+    private NoteAdapter adapter;
 
+    private static final String TAG = "MainActivity";
+
+    //选中的note的电话集合
+    private List<String> phoneList;
+
+    //选中的note的email集合
+    private List<String> emailList;
+    private ImageView addImageView;
+    private EditText et_search;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+    protected void onResume() {
+        super.onResume();
 
-        recyclerView = (RecyclerView) findViewById(R.id.rv_main);
-        layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-        allList=mainPresenter.getAllList();
-        NoteAdapter adapter = new NoteAdapter(getApplicationContext(),allList);
+        adapter = new NoteAdapter(getApplicationContext());
         recyclerView.setAdapter(adapter);
-        addImageView = (ImageView) findViewById(R.id.iv_add_icon);
-        addImageView.setOnClickListener(new View.OnClickListener() {
 
-            @Override
-            public void onClick(View view) {
-                showPopupMenu(addImageView);
-            }
-        });
+        Log.d(TAG, "zxzhang" + mSchoolyearbooks.toString() + String.valueOf(mSchoolyearbooks.size()));
 
         //长按监听
         adapter.setOnItemClickListener(new NoteAdapter.OnItemOnClickListener() {
@@ -79,13 +85,55 @@ public class MainActivity extends AppCompatActivity{
                 checkboxflag = true;
                 FrameLayout frameLayout = (FrameLayout) findViewById(R.id.fl_main);
                 frameLayout.setVisibility(View.VISIBLE);
-                ImageView deleteImageView = (ImageView) findViewById(R.id.iv_delete_icon);
+                ImageView deleteImageView = (ImageView) findViewById(R.id.iv_main_delete);
                 deleteImageView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
 
                     }
                 });
+            }
+        });
+    }
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView = (RecyclerView) findViewById(R.id.rv_main);
+        recyclerView.setLayoutManager(layoutManager);
+
+        mSchoolyearbooks = DataSupport.findAll(SchoolyearbookBean.class);
+        adapter = new NoteAdapter(getApplicationContext(), mSchoolyearbooks);
+        recyclerView.setAdapter(adapter);
+
+        //点击email图标事件
+        ImageView emailImageView = (ImageView) findViewById(R.id.iv_main_email);
+        emailImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(MainActivity.this, "点击了发送邮件按钮", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        //点击delete图标事件
+        ImageView deleteImageView = (ImageView) findViewById(R.id.iv_main_delete);
+        deleteImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(MainActivity.this, "点击了删除按钮", Toast.LENGTH_SHORT).show();
+                NoteDelete noteDelete = new NoteDelete(phoneList);
+                onResume();
+            }
+        });
+
+        addImageView = (ImageView) findViewById(R.id.iv_add_icon);
+        addImageView.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                showPopupMenu(addImageView);
             }
         });
 
@@ -113,19 +161,10 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void afterTextChanged(Editable s) {
                 //编辑框内容改变后
-                if(s.length()==0){
-                    allList=mainPresenter.getAllList();
-                    NoteAdapter adapter = new NoteAdapter(getApplicationContext(),allList);
-                    recyclerView.setAdapter(adapter);
-                }else{
-                    selectedList=mainPresenter.toSelect(s.toString());
-                    NoteAdapter adapter = new NoteAdapter(getApplicationContext(),selectedList);
-                    recyclerView.setAdapter(adapter);
-                }
 
             }
-        });}
-
+        });
+    }
 
     private void showPopupMenu(ImageView addImageView) {
         // View当前PopupMenu显示的相对View的位置
@@ -133,6 +172,7 @@ public class MainActivity extends AppCompatActivity{
 
         // menu布局
         getMenuInflater().inflate(R.menu.menu, popupMenu.getMenu());
+
         //给菜单绑定监听器
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
@@ -178,4 +218,9 @@ public class MainActivity extends AppCompatActivity{
         }
         return true;
     }
+
+    public void initData(){
+
+    }
+
 }

@@ -9,9 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import org.litepal.crud.DataSupport;
 import org.swsd.school_yearbook.R;
 import org.swsd.school_yearbook.model.bean.SchoolyearbookBean;
-import org.swsd.school_yearbook.view.activity.NoteItemActivity;
+import org.swsd.school_yearbook.view.activity.NewPersonActivity;
 
 import java.util.List;
 
@@ -55,6 +56,12 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder>
         mContext = context;
     }
 
+    public NoteAdapter(Context context){
+        mContext = context;
+        mSchoolyearbookList = DataSupport.findAll(SchoolyearbookBean.class);
+    }
+
+
     @Override
     public boolean onLongClick(View view) {
         return false;
@@ -95,7 +102,8 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder>
                 SchoolyearbookBean newSchoolyearbook
                         = new SchoolyearbookBean(id,name,address,phone,wechat,email,qq,signature);
 
-                Intent intent = new Intent(mContext, NoteItemActivity.class);
+                Intent intent = new Intent(mContext, NewPersonActivity.class);
+
                 Bundle bundle = new Bundle();
                 //通过bundle传输数据
                 bundle.putSerializable("note",newSchoolyearbook);
