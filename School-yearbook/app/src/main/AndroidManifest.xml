@@ -12,14 +12,12 @@
         android:theme="@style/AppTheme">
         <activity android:name=".view.activity.MainActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".view.activity.SendEmailActivity" />
-        <activity android:name=".view.activity.NewPersonActivity"/>
-        <activity android:name=".view.activity.NoteItemActivity" />
-    </application>
+        <activity android:name=".view.activity.NoteItemActivity"></activity>
 
+    </application>
 </manifest>
+
