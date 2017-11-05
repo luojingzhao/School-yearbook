@@ -9,12 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import org.litepal.crud.DataSupport;
 import org.swsd.school_yearbook.R;
 import org.swsd.school_yearbook.model.bean.SchoolyearbookBean;
 import org.swsd.school_yearbook.view.activity.NewPersonActivity;
-import org.swsd.school_yearbook.view.activity.NoteItemActivity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -55,6 +54,11 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder>
     public NoteAdapter(Context context,List<SchoolyearbookBean>schoolyearbooks){
         mSchoolyearbookList = schoolyearbooks;
         mContext = context;
+    }
+
+    public NoteAdapter(Context context){
+        mContext = context;
+        mSchoolyearbookList = DataSupport.findAll(SchoolyearbookBean.class);
     }
 
     @Override

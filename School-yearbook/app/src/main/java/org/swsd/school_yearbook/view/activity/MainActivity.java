@@ -48,31 +48,32 @@ public class MainActivity extends AppCompatActivity{
     //选中的note的email集合
     private List<String> emailList;
 
+
 //    @Override
-//    protected void onResume() {
-//        super.onResume();
-////        emailList.clear();
-////        NoteAdapter adapter = new NoteAdapter();
-////        recyclerView.setAdapter(adapter);
+//    protected void onCreate(@Nullable Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        setContentView(R.layout.activity_main);
+//
+//        recyclerView = (RecyclerView) findViewById(R.id.rv_main);
+//        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+//
+//        recyclerView = (RecyclerView) findViewById(R.id.rv_main);
+//
+//        recyclerView.setLayoutManager(layoutManager);
+//
+//        //测试数据
+//        //initData();
+//
+//        mSchoolyearbooks = DataSupport.findAll(SchoolyearbookBean.class);
+//
+//        adapter = new NoteAdapter(getApplicationContext(), mSchoolyearbooks);
 //    }
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+    protected void onResume() {
+        super.onResume();
 
-        recyclerView = (RecyclerView) findViewById(R.id.rv_main);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-
-        recyclerView = (RecyclerView) findViewById(R.id.rv_main);
-
-        recyclerView.setLayoutManager(layoutManager);
-
-        initData();
-
-        mSchoolyearbooks = DataSupport.findAll(SchoolyearbookBean.class);
-
-        adapter = new NoteAdapter(getApplicationContext(),mSchoolyearbooks);
+        adapter = new NoteAdapter(getApplicationContext());
         recyclerView.setAdapter(adapter);
 
         Log.d(TAG, "zxzhang" + mSchoolyearbooks.toString() + String.valueOf(mSchoolyearbooks.size()));
@@ -98,6 +99,20 @@ public class MainActivity extends AppCompatActivity{
                 });
             }
         });
+    }
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView = (RecyclerView) findViewById(R.id.rv_main);
+        recyclerView.setLayoutManager(layoutManager);
+
+        initData();
+        mSchoolyearbooks = DataSupport.findAll(SchoolyearbookBean.class);
+        adapter = new NoteAdapter(getApplicationContext(), mSchoolyearbooks);
+
 
         //点击email图标事件
         ImageView emailImageView = (ImageView) findViewById(R.id.iv_main_email);
@@ -114,10 +129,8 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 Toast.makeText(MainActivity.this, "点击了删除按钮", Toast.LENGTH_SHORT).show();
-                //NoteDelete noteDelete = new NoteDelete(phoneList);
-
-                //adapter = new NoteAdapter(getApplicationContext(),);
-                //phoneList.clear();
+                NoteDelete noteDelete = new NoteDelete(phoneList);
+                onResume();
             }
         });
 
@@ -177,7 +190,7 @@ public class MainActivity extends AppCompatActivity{
             checkboxflag = false;
             FrameLayout frameLayout = (FrameLayout) findViewById(R.id.fl_main);
             frameLayout.setVisibility(View.GONE);
-        }else {
+        }else if(keyCode==KeyEvent.KEYCODE_BACK){
             finish();
         }
         return true;
