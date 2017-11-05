@@ -134,7 +134,7 @@
             android:text="@string/note_signature"
             />
         <EditText
-            android:id="@+id/et_contact_assgin"
+            android:id="@+id/et_contact_signature"
             android:layout_marginRight="10dp"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

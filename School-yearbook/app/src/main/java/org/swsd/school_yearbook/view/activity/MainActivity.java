@@ -72,7 +72,6 @@ public class MainActivity extends AppCompatActivity{
         recyclerView.setAdapter(adapter);
 
         Log.d(TAG, "zxzhang" + mSchoolyearbooks.toString() + String.valueOf(mSchoolyearbooks.size()));
-
         //长按监听
         adapter.setOnItemClickListener(new NoteAdapter.OnItemOnClickListener() {
             @Override
@@ -89,7 +88,6 @@ public class MainActivity extends AppCompatActivity{
                 deleteImageView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-
                     }
                 });
             }
@@ -113,7 +111,7 @@ public class MainActivity extends AppCompatActivity{
         emailImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(MainActivity.this, "点击了发送邮件按钮", Toast.LENGTH_SHORT).show();
+                goSendEmailActivity();
             }
         });
 
@@ -164,6 +162,8 @@ public class MainActivity extends AppCompatActivity{
 
             }
         });
+
+
     }
 
     private void showPopupMenu(ImageView addImageView) {
@@ -179,7 +179,8 @@ public class MainActivity extends AppCompatActivity{
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()){
                     case R.id.add_item:
-                        goAddNewPerson();
+                        /*goAddNewPerson();*/
+                        goSendEmailActivity();
                         break;
                     case R.id.excel_item:
                         Toast.makeText(MainActivity.this, "导出excel成功，请在文件管理器中查看", Toast.LENGTH_SHORT).show();
@@ -199,6 +200,12 @@ public class MainActivity extends AppCompatActivity{
     // 进入到新建同学录界面
     private void goAddNewPerson(){
         Intent intent = new Intent(MainActivity.this,NewPersonActivity.class);
+        startActivity(intent);
+    }
+
+    // 进入群发邮件状态
+    private void goSendEmailActivity(){
+        Intent intent = new Intent(MainActivity.this, SendEmailActivity.class);
         startActivity(intent);
     }
 
