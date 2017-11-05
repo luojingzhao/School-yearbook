@@ -24,6 +24,7 @@ import org.swsd.school_yearbook.presenter.NoteDelete;
 import org.swsd.school_yearbook.presenter.adapter.NoteAdapter;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import jxl.write.WriteException;
@@ -50,7 +51,7 @@ public class MainActivity extends AppCompatActivity{
     private List<String> phoneList;
 
     //选中的note的email集合
-    private List<String> emailList;
+    private ArrayList<String> emailList;
     @Override
     protected void onResume() {
         super.onResume();
@@ -164,6 +165,11 @@ public class MainActivity extends AppCompatActivity{
     // 进入群发邮件状态
     private void goSendEmailActivity(){
         Intent intent = new Intent(MainActivity.this, SendEmailActivity.class);
+        emailList = new ArrayList<>();
+        emailList.add("1009224322@qq.com");
+        emailList.add("1009224322@qq.com");
+        //ArrayList<String> Test = (ArrayList<String>) emailList;
+        intent.putStringArrayListExtra("email",emailList);
         startActivity(intent);
     }
 
@@ -202,4 +208,5 @@ public class MainActivity extends AppCompatActivity{
             e.printStackTrace();
         }
     }
+
 }
