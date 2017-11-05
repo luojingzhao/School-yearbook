@@ -27,11 +27,12 @@
                 android:layout_gravity="center"/>
 
             <ImageView
+                android:id="@+id/iv_add_icon"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginRight="5dp"
-                android:background="@mipmap/ic_more"
+                android:background="@mipmap/ic_add"
                 android:layout_gravity="right"/>
         </FrameLayout>
 
@@ -42,6 +43,7 @@
         android:layout_height="1dp"
         android:background="#000000"/>
 
+    <!--搜索栏-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -50,7 +52,7 @@
         android:background="@drawable/border_main">
 
         <ImageView
-            android:id="@+id/iv_search_icon"
+            android:id="@+id/iv_main_add"
             android:layout_width="15dp"
             android:layout_height="15dp"
             android:layout_gravity="center_vertical"
@@ -60,8 +62,9 @@
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"/>
 
+        <!--编辑搜索内容-->
         <EditText
-            android:id="@+id/et_search"
+            android:id="@+id/et_main_search"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -69,9 +72,10 @@
             android:imeOptions="actionSearch" />
         </LinearLayout>
 
+    <!--RecyclerView的显示-->
     <android.support.v7.widget.RecyclerView
         android:layout_marginTop="5dp"
-        android:id="@+id/recycler_view"
+        android:id="@+id/rv_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 

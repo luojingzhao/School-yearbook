@@ -2,6 +2,8 @@ package org.swsd.school_yearbook.model.bean;
 
 import org.litepal.crud.DataSupport;
 
+import java.io.Serializable;
+
 /**
  * author     :  张昭锡
  * time       :  2017/11/04
@@ -9,7 +11,7 @@ import org.litepal.crud.DataSupport;
  * version:   :  1.0
  */
 
-public class SchoolyearbookBean extends DataSupport{
+public class SchoolyearbookBean extends DataSupport implements Serializable {
     private int id;
     private String name;
     private String address;
@@ -19,6 +21,22 @@ public class SchoolyearbookBean extends DataSupport{
     private String qq;
     private String signature;
     private String avatarPath;
+
+    public SchoolyearbookBean(){
+
+    }
+
+    public SchoolyearbookBean(int id,String name,String address,String phone,String wechat,
+                              String email, String qq,String signature){
+        this.id = id;
+        this.name = name;
+        this.address = address;
+        this.phone = phone;
+        this.wechat = wechat;
+        this.email = email;
+        this.qq = qq;
+        this.signature = signature;
+    }
 
     public int getId() {
         return id;
