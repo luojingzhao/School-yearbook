@@ -134,7 +134,7 @@
 
                 <!--邮箱-->
                 <TextView
-                    android:id="@+id/et_note_email"
+                    android:id="@+id/tv_note_email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
@@ -155,7 +155,7 @@
 
                 <!--QQ号码-->
                 <TextView
-                    android:id="@+id/et_note_qq"
+                    android:id="@+id/tv_note_qq"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
@@ -175,7 +175,7 @@
 
                 <!--个性签名-->
                 <TextView
-                    android:id="@+id/et_note_signature"
+                    android:id="@+id/tv_note_signature"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:lines="3" />
