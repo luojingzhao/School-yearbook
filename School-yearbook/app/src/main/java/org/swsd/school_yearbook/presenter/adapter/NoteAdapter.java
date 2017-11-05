@@ -13,6 +13,7 @@ import org.swsd.school_yearbook.R;
 import org.swsd.school_yearbook.model.bean.SchoolyearbookBean;
 import org.swsd.school_yearbook.view.activity.NoteItemActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,7 +23,8 @@ import java.util.List;
  * version:   :  1.0
  */
 
-public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder>{
+public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder>
+        implements  View.OnLongClickListener{
 
     private List<SchoolyearbookBean>mSchoolyearbookList;
     private Context mContext;
@@ -55,10 +57,24 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder>{
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
+    public boolean onLongClick(View view) {
+        return false;
+    }
+
+    public interface OnItemOnClickListener{
+        void onItemLongOnClick(View view ,int pos);
+    }
+
+    private OnItemOnClickListener mOnItemOnClickListener;
+    public void setOnItemClickListener(OnItemOnClickListener listener){
+        this.mOnItemOnClickListener = listener;
+    }
+
+    @Override
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.note_item, parent, false);
         final ViewHolder holder = new ViewHolder(view);
-
 
         //点击主页跳转到编辑页
         holder.noteView.setOnClickListener(new View.OnClickListener() {
@@ -94,7 +110,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder>{
     }
 
     @Override
-    public void onBindViewHolder(NoteAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(final NoteAdapter.ViewHolder holder, final int position) {
         SchoolyearbookBean schoolyearbookBean = mSchoolyearbookList.get(position);
         holder.noteName.setText(schoolyearbookBean.getName());
         holder.noteAddress.setText(schoolyearbookBean.getAddress());
@@ -103,6 +119,17 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder>{
         holder.noteEmail.setText(schoolyearbookBean.getEmail());
         holder.noteQQ.setText(schoolyearbookBean.getQq());
         holder.noteSignature.setText(schoolyearbookBean.getSignature());
+
+        if(mOnItemOnClickListener!=null){
+            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    mOnItemOnClickListener.onItemLongOnClick(holder.itemView,position);
+                    return false;
+                }
+            });
+        }
+
     }
 
     @Override
@@ -110,5 +137,9 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder>{
         return mSchoolyearbookList.size();
     }
 
+
+    public List<SchoolyearbookBean> getmSchoolyearbookList(){
+        return  mSchoolyearbookList;
+    }
 
 }
