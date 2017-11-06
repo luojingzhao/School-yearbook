@@ -30,6 +30,7 @@ import android.widget.ImageView;
 import android.widget.EditText;
 import android.widget.Toast;
 import org.swsd.school_yearbook.R;
+import org.swsd.school_yearbook.model.bean.SchoolyearbookBean;
 
 
 public class NewPersonActivity extends AppCompatActivity {
@@ -45,11 +46,14 @@ public class NewPersonActivity extends AppCompatActivity {
     private EditText eT_email;
     private EditText eT_qq;
     private EditText eT_signature;
-
+    private boolean isNewPerson = true;
+    private SchoolyearbookBean tempDB;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_person);
+        bindEditText();
+        initBundle();
         btnAddNewPerson = (FloatingActionButton) findViewById(R.id.add_new_person);
         btnAddNewPerson.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -206,9 +210,33 @@ public class NewPersonActivity extends AppCompatActivity {
         }
     }
 
+    private void initBundle(){
+        if(getIntent().getExtras() == null){
+            Toast.makeText(this, "正在新建联系人", Toast.LENGTH_SHORT).show();
+        }else{
+            isNewPerson = false;
+            Toast.makeText(this, "正在修改联系人", Toast.LENGTH_SHORT).show();
+        }
+
+        if (!isNewPerson){
+            Bundle bundle = new Bundle();
+            bundle = getIntent().getExtras();
+            // 抽取Budle中的对象
+            tempDB = (SchoolyearbookBean) bundle.getSerializable("note");
+            onReloadET();
+        }
+    }
+
+    // 保存联系人到数据库
     private void addNewPerson(){
-        insertYearBook();
-        Toast.makeText(this, "添加成功", Toast.LENGTH_SHORT).show();
+        if(isNewPerson){
+            insertYearBook();
+            Toast.makeText(this, "新建联系人成功", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            upDatePerson();
+            Toast.makeText(this, "修改联系人成功", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void insertYearBook(){
@@ -220,6 +248,35 @@ public class NewPersonActivity extends AppCompatActivity {
         String qq;
         String signature;
         String avatarPath;
+        // 获取编辑框示文本
+        name = eT_name.getText().toString();
+        address = eT_address.getText().toString();
+        phone = eT_phone.getText().toString();
+        wechat = eT_wechat.getText().toString();
+        email = eT_email.getText().toString();
+        signature = eT_signature.getText().toString();
+        qq = eT_qq.getText().toString();
+
+        //测试
+        if(!name.equals("") && isMobil(phone) && isEmail(email)){
+            SchoolyearbookBean person = new SchoolyearbookBean();
+            person.setName(name);
+            person.setAddress(address);
+            person.setPhone(phone);
+            person.setWechat(wechat);
+            person.setSignature(signature);
+            person.setQq(qq);
+            person.setEmail(email);
+            person.save();
+            Toast.makeText(this, "保存数据成功", Toast.LENGTH_SHORT).show();
+            finish();
+        }
+        else{
+            Toast.makeText(this, "请检查姓名，邮箱，电话是否合法！", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void bindEditText(){
         //绑定编辑框
         eT_name = (EditText)findViewById(R.id.et_contact_name);
         eT_address = (EditText)findViewById(R.id.et_contact_address);
@@ -228,28 +285,7 @@ public class NewPersonActivity extends AppCompatActivity {
         eT_email = (EditText)findViewById(R.id.et_contact_email);
         eT_qq = (EditText)findViewById(R.id.et_contact_qq);
         eT_signature = (EditText)findViewById(R.id.et_contact_signature);
-
-        // 获取编辑框示文本
-        name = eT_name.getText().toString();
-        address = eT_address.getText().toString();
-        phone = eT_phone.getText().toString();
-        wechat = eT_wechat.getText().toString();
-        email = eT_email.getText().toString();
-        signature = eT_signature.getText().toString();
-
-        //测试
-        if(name.equals("")){
-            Toast.makeText(this,"姓名为空", Toast.LENGTH_SHORT).show();
-        }
-        if(!isMobil(phone)) {
-            Toast.makeText(this, "不是电话", Toast.LENGTH_SHORT).show();
-        }
-        if(!isEmail(email)){
-            Toast.makeText(this, "不是邮箱", Toast.LENGTH_SHORT).show();
-        }
-
     }
-
     // 手机验证
     private boolean isMobil(String number){
         /*
@@ -276,5 +312,27 @@ public class NewPersonActivity extends AppCompatActivity {
         } else {
             return strEmail.matches(strPattern);
         }
+    }
+
+    private void upDatePerson() {
+        tempDB.setName(eT_name.getText().toString());
+        tempDB.setName(eT_address.getText().toString());
+        tempDB.setName(eT_phone.getText().toString());
+        tempDB.setName(eT_wechat.getText().toString());
+        tempDB.setName(eT_email.getText().toString());
+        tempDB.setName(eT_qq.getText().toString());
+        tempDB.setName(eT_signature.getText().toString());
+        tempDB.save();
+    }
+
+    // 重新装载数据
+    private void onReloadET(){
+        eT_name.setText(tempDB.getName());
+        eT_address.setText(tempDB.getAddress());
+        eT_phone.setText(tempDB.getPhone());
+        eT_wechat.setText(tempDB.getWechat());
+        eT_qq.setText(tempDB.getQq());
+        eT_signature.setText(tempDB.getSignature());
+        eT_email.setText(tempDB.getEmail());
     }
 }
