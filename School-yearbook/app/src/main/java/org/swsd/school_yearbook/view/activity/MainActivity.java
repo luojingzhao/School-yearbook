@@ -26,7 +26,6 @@ import org.swsd.school_yearbook.presenter.ExcelPresenter;
 import org.swsd.school_yearbook.presenter.NoteDelete;
 import org.swsd.school_yearbook.presenter.adapter.MainPresenter;
 import org.swsd.school_yearbook.presenter.adapter.NoteAdapter;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,10 +39,9 @@ import jxl.write.WriteException;
  * description:  RecyclerView在界面上的实现，title加号的点击实现
  * version:   :  1.0
  */
+public class MainActivity extends AppCompatActivity implements NoteAdapter.Callback{
 
-public class MainActivity extends AppCompatActivity{
-
-    List<SchoolyearbookBean>mSchoolyearbooks;
+    List<SchoolyearbookBean> mSchoolyearbooks;
     private ImageView addImaeView;
 
     private RecyclerView recyclerView;
@@ -59,43 +57,19 @@ public class MainActivity extends AppCompatActivity{
 
     private static final String TAG = "MainActivity";
 
-    //选中的note的电话集合
-    private List<String> phoneList;
-
-    //选中的note的email集合
-    //private ArrayList<String> emailList;
-    private List<String> emailList;
     private ImageView addImageView;
     private EditText et_search;
+    //选中的note的id集合
+    List<Integer> idList = new ArrayList<>();
+
+    //选中的email的集合
+    List<String> emailList = new ArrayList<>();
+
 
     @Override
     protected void onResume() {
         super.onResume();
-
-       adapter = new NoteAdapter(getApplicationContext());
-       recyclerView.setAdapter(adapter);
-
-        Log.d(TAG, "zxzhang" + mSchoolyearbooks.toString() + String.valueOf(mSchoolyearbooks.size()));
-        //长按监听
-        adapter.setOnItemClickListener(new NoteAdapter.OnItemOnClickListener() {
-            @Override
-            public void onItemLongOnClick(View view, int pos) {
-                for(int i = 0; i < recyclerView.getChildCount();  i++){
-                    View view1 = recyclerView.getChildAt(i);
-                    CheckBox checkBox = view1.findViewById(R.id.cb_note);
-                    checkBox.setVisibility(View.VISIBLE);
-                }
-                checkboxflag = true;
-                FrameLayout frameLayout = (FrameLayout) findViewById(R.id.fl_main);
-                frameLayout.setVisibility(View.VISIBLE);
-                ImageView deleteImageView = (ImageView) findViewById(R.id.iv_main_delete);
-                deleteImageView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                    }
-                });
-            }
-        });
+        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -105,9 +79,25 @@ public class MainActivity extends AppCompatActivity{
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView = (RecyclerView) findViewById(R.id.rv_main);
         recyclerView.setLayoutManager(layoutManager);
-
         mSchoolyearbooks = DataSupport.findAll(SchoolyearbookBean.class);
-        adapter = new NoteAdapter(getApplicationContext(), mSchoolyearbooks);
+        adapter = new NoteAdapter(getApplicationContext(), mSchoolyearbooks, this);
+        recyclerView.setAdapter(adapter);
+
+        //initData();
+        mSchoolyearbooks = new ArrayList<>();
+        mSchoolyearbooks.clear();
+        mSchoolyearbooks = DataSupport.findAll(SchoolyearbookBean.class);
+        adapter = new NoteAdapter(getApplicationContext(), mSchoolyearbooks, this);
+        adapter.setOnItemClickListener(new NoteAdapter.OnItemOnClickListener() {
+            @Override
+            public void onItemLongOnClick(View view, int pos) {
+                adapter.checkTemp = true;
+                adapter.notifyDataSetChanged();
+                checkboxflag = true;
+                FrameLayout frameLayout = (FrameLayout) findViewById(R.id.fl_main);
+                frameLayout.setVisibility(View.VISIBLE);
+            }
+        });
         recyclerView.setAdapter(adapter);
 
         //点击email图标事件
@@ -116,6 +106,16 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 goSendEmailActivity();
+                for(int i = 0; i < idList.size(); i++){
+                    emailList.add(mSchoolyearbooks.get(idList.get(i)).getEmail());
+                }
+                idList.clear();
+
+                //将选择框隐藏
+                adapter.checkTemp = false;
+                adapter.notifyDataSetChanged();
+                FrameLayout frameLayout = (FrameLayout) findViewById(R.id.fl_main);
+                frameLayout.setVisibility(View.GONE);
             }
         });
 
@@ -124,18 +124,25 @@ public class MainActivity extends AppCompatActivity{
         deleteImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(MainActivity.this, "点击了删除按钮", Toast.LENGTH_SHORT).show();
-                NoteDelete noteDelete = new NoteDelete(phoneList);
-                //onResume();
+                //Toast.makeText(MainActivity.this, "点击了删除按钮" + idList.size(), Toast.LENGTH_SHORT).show();
+
+                //删除选中
+                for(int i = 0; i < idList.size(); i++){
+//                    Log.d("hahaha",mSchoolyearbooks.get(idList.get(i)).getEmail()+"");
+                    DataSupport.deleteAll(SchoolyearbookBean.class, "name = ?", mSchoolyearbooks.get(idList.get(i)).getName());
+                    mSchoolyearbooks.remove(idList.get(i) - i);
+                }
+                adapter.notifyDataSetChanged();
+                idList.clear();
+                recyclerView.scrollToPosition(0);
             }
         });
 
-        addImageView = (ImageView) findViewById(R.id.iv_add_icon);
-        addImageView.setOnClickListener(new View.OnClickListener() {
-
+        addImaeView = (ImageView) findViewById(R.id.iv_add_icon);
+        addImaeView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showPopupMenu(addImageView);
+                showPopupMenu(addImaeView);
             }
         });
 
@@ -225,6 +232,8 @@ public class MainActivity extends AppCompatActivity{
                 CheckBox checkBox = view1.findViewById(R.id.cb_note);
                 checkBox.setVisibility(View.GONE);
             }
+            adapter.checkTemp = false;
+            adapter.notifyDataSetChanged();
             checkboxflag = false;
             FrameLayout frameLayout = (FrameLayout) findViewById(R.id.fl_main);
             frameLayout.setVisibility(View.GONE);
@@ -248,6 +257,24 @@ public class MainActivity extends AppCompatActivity{
         } catch (IOException e) {
             e.printStackTrace();
         }
+        for (int i = 0; i < 10; i++)
+        {
+            SchoolyearbookBean book = new SchoolyearbookBean();
+            book.setName("zyzhang" + i);
+            book.setPhone("123456");
+            //book.setEmail("@zyzhang");
+            book.save();
+        }
+    }
+
+    @Override
+    public void myOnClick(View view) {
+        int idNote = (int) view.getTag();
+        idList.add(idNote);
+    }
+
+    public void backCreateDate(){
+        mSchoolyearbooks = DataSupport.findAll(SchoolyearbookBean.class);
     }
 
 }

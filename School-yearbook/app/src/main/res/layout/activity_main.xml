@@ -69,11 +69,21 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@null"
-            android:imeOptions="actionSearch"
-            android:singleLine="true"
-            android:hint="搜索" />
-        </LinearLayout>
+            android:maxLines="1"
+            android:imeOptions="actionSearch" />
 
+        <ImageView
+            android:id="@+id/tv_search_cancel"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_gravity="center_vertical"
+            android:src="@mipmap/ic_cancel"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:visibility="gone"/>
+
+    </LinearLayout>
 
     <!--RecyclerView的显示-->
     <FrameLayout

@@ -3,10 +3,16 @@ package org.swsd.school_yearbook.presenter.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.telecom.Call;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.litepal.crud.DataSupport;
@@ -24,10 +30,28 @@ import java.util.List;
  */
 
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder>
-        implements  View.OnLongClickListener{
+        implements  View.OnLongClickListener, CompoundButton.OnCheckedChangeListener {
 
     private List<SchoolyearbookBean>mSchoolyearbookList;
     private Context mContext;
+    private Callback callback;
+    public static boolean checkTemp = false;
+
+    //重写回调
+    @Override
+    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+        if (b)
+        {
+            callback.myOnClick(compoundButton);
+        }
+    }
+
+    //回调接口
+    public interface Callback
+    {
+        public void myOnClick(View view);
+    }
+
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         View noteView;
@@ -38,6 +62,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder>
         TextView noteEmail;
         TextView noteQQ;
         TextView noteSignature;
+        CheckBox noteCheckBox;
         public ViewHolder(View view){
             super(view);
             noteView = view;
@@ -48,19 +73,20 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder>
             noteEmail = view.findViewById(R.id.tv_note_email);
             noteQQ = view.findViewById(R.id.tv_note_qq);
             noteSignature = view.findViewById(R.id.tv_note_signature);
+            noteCheckBox = view.findViewById(R.id.cb_note);
         }
+    }
+
+    public NoteAdapter(Context context, List<SchoolyearbookBean>schoolyearbooks , Callback callback){
+        mSchoolyearbookList = schoolyearbooks;
+        mContext = context;
+        this.callback = callback;
     }
 
     public NoteAdapter(Context context,List<SchoolyearbookBean>schoolyearbooks){
         mContext = context;
         mSchoolyearbookList=schoolyearbooks;
     }
-
-    public NoteAdapter(Context context){
-        mContext = context;
-        mSchoolyearbookList = DataSupport.findAll(SchoolyearbookBean.class);
-    }
-
 
     @Override
     public boolean onLongClick(View view) {
@@ -87,6 +113,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder>
             @Override
             public void onClick(View v) {
                 int position = holder.getAdapterPosition();
+
                 SchoolyearbookBean book = mSchoolyearbookList.get(position);
 
                 int id = book.getId();
@@ -102,7 +129,6 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder>
                         = new SchoolyearbookBean(id,name,address,phone,wechat,email,qq,signature);
 
                 Intent intent = new Intent(mContext, NewPersonActivity.class);
-
                 Bundle bundle = new Bundle();
                 //通过bundle传输数据
                 bundle.putSerializable("note",newSchoolyearbook);
@@ -110,6 +136,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder>
                 mContext.startActivity(intent);
             }
         });
+
 
         return holder;
     }
@@ -124,13 +151,17 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder>
         holder.noteEmail.setText(schoolyearbookBean.getEmail());
         holder.noteQQ.setText(schoolyearbookBean.getQq());
         holder.noteSignature.setText(schoolyearbookBean.getSignature());
+        holder.noteCheckBox.setOnCheckedChangeListener(this);
+        holder.noteCheckBox.setTag(position);
+        holder.noteCheckBox.setChecked(false);
+        holder.noteCheckBox.setVisibility(checkTemp ? View.VISIBLE:View.GONE);
 
         if(mOnItemOnClickListener!=null){
             holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
                     mOnItemOnClickListener.onItemLongOnClick(holder.itemView,position);
-                    return false;
+                    return true;
                 }
             });
         }
@@ -141,7 +172,6 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder>
     public int getItemCount() {
         return mSchoolyearbookList.size();
     }
-
 
     public List<SchoolyearbookBean> getmSchoolyearbookList(){
         return  mSchoolyearbookList;

@@ -9,6 +9,8 @@
         android:layout_height="wrap_content"
         android:background="@drawable/boder">
 
+
+
         <!--头像-->
         <LinearLayout
             android:layout_width="wrap_content"
