@@ -28,7 +28,7 @@ public class MainPresenter implements IPresenter{
    public  List<SchoolyearbookBean> toSelect(String string){
         //获取数据库中的姓名
         List<SchoolyearbookBean>nameList= DataSupport.select("name").find(SchoolyearbookBean.class);
-        List<SchoolyearbookBean>schoolyearbookBeanList=new ArrayList<>();
+        List<SchoolyearbookBean>allList=new ArrayList<>();
         for(SchoolyearbookBean syb: nameList){
             int lenth=string.length();
             String nameString=syb.getName().toString();
@@ -41,15 +41,12 @@ public class MainPresenter implements IPresenter{
                 str+=nameArry[i];
             }
             if(str.equals(string.toString())){
-                SchoolyearbookBean schoolyearbookBean =
-                        new SchoolyearbookBean(syb.getId(),syb.getName(),
-                                syb.getAddress(), syb.getPhone(),syb.getWechat(),
-                                syb.getEmail(),syb.getQq(),syb.getSignature());
-
-                schoolyearbookBeanList.add(schoolyearbookBean);
+                allList=DataSupport.select("id","name","address","phone",
+                        "wechat","email","qq","signature")
+                        .where("name=?",nameString).find(SchoolyearbookBean.class);
             }
         }
-        return schoolyearbookBeanList;
+        return allList;
     }
     @Override
     public void attachView(Object view, Context context) {

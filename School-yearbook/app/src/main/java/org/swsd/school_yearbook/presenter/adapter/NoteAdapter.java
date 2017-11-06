@@ -52,8 +52,8 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder>
     }
 
     public NoteAdapter(Context context,List<SchoolyearbookBean>schoolyearbooks){
-        mSchoolyearbookList = schoolyearbooks;
         mContext = context;
+        mSchoolyearbookList=schoolyearbooks;
     }
 
     public NoteAdapter(Context context){
