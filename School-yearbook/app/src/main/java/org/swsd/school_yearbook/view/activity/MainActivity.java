@@ -1,16 +1,21 @@
 
 package org.swsd.school_yearbook.view.activity;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,14 +28,12 @@ import org.litepal.crud.DataSupport;
 import org.swsd.school_yearbook.R;
 import org.swsd.school_yearbook.model.bean.SchoolyearbookBean;
 import org.swsd.school_yearbook.presenter.ExcelPresenter;
-import org.swsd.school_yearbook.presenter.NoteDelete;
+import org.swsd.school_yearbook.presenter.ImagePresenter;
 import org.swsd.school_yearbook.presenter.adapter.MainPresenter;
 import org.swsd.school_yearbook.presenter.adapter.NoteAdapter;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import jxl.write.WriteException;
 
 
@@ -40,10 +43,9 @@ import jxl.write.WriteException;
  * description:  RecyclerView在界面上的实现，title加号的点击实现
  * version:   :  1.0
  */
+public class MainActivity extends AppCompatActivity implements NoteAdapter.Callback{
 
-public class MainActivity extends AppCompatActivity{
-
-    List<SchoolyearbookBean>mSchoolyearbooks;
+    List<SchoolyearbookBean> mSchoolyearbooks;
     private ImageView addImaeView;
 
     private RecyclerView recyclerView;
@@ -59,43 +61,19 @@ public class MainActivity extends AppCompatActivity{
 
     private static final String TAG = "MainActivity";
 
-    //选中的note的电话集合
-    private List<String> phoneList;
-
-    //选中的note的email集合
-    //private ArrayList<String> emailList;
-    private List<String> emailList;
     private ImageView addImageView;
     private EditText et_search;
+    //选中的note的id集合
+    List<Integer> idList = new ArrayList<>();
+
+    //选中的email的集合
+    List<String> emailList = new ArrayList<>();
+
 
     @Override
     protected void onResume() {
         super.onResume();
-
-       adapter = new NoteAdapter(getApplicationContext());
-       recyclerView.setAdapter(adapter);
-
-        Log.d(TAG, "zxzhang" + mSchoolyearbooks.toString() + String.valueOf(mSchoolyearbooks.size()));
-        //长按监听
-        adapter.setOnItemClickListener(new NoteAdapter.OnItemOnClickListener() {
-            @Override
-            public void onItemLongOnClick(View view, int pos) {
-                for(int i = 0; i < recyclerView.getChildCount();  i++){
-                    View view1 = recyclerView.getChildAt(i);
-                    CheckBox checkBox = view1.findViewById(R.id.cb_note);
-                    checkBox.setVisibility(View.VISIBLE);
-                }
-                checkboxflag = true;
-                FrameLayout frameLayout = (FrameLayout) findViewById(R.id.fl_main);
-                frameLayout.setVisibility(View.VISIBLE);
-                ImageView deleteImageView = (ImageView) findViewById(R.id.iv_main_delete);
-                deleteImageView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                    }
-                });
-            }
-        });
+        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -105,9 +83,25 @@ public class MainActivity extends AppCompatActivity{
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView = (RecyclerView) findViewById(R.id.rv_main);
         recyclerView.setLayoutManager(layoutManager);
-
         mSchoolyearbooks = DataSupport.findAll(SchoolyearbookBean.class);
-        adapter = new NoteAdapter(getApplicationContext(), mSchoolyearbooks);
+        adapter = new NoteAdapter(getApplicationContext(), mSchoolyearbooks, this);
+        recyclerView.setAdapter(adapter);
+
+        //initData();
+        mSchoolyearbooks = new ArrayList<>();
+        mSchoolyearbooks.clear();
+        mSchoolyearbooks = DataSupport.findAll(SchoolyearbookBean.class);
+        adapter = new NoteAdapter(getApplicationContext(), mSchoolyearbooks, this);
+        adapter.setOnItemClickListener(new NoteAdapter.OnItemOnClickListener() {
+            @Override
+            public void onItemLongOnClick(View view, int pos) {
+                adapter.checkTemp = true;
+                adapter.notifyDataSetChanged();
+                checkboxflag = true;
+                FrameLayout frameLayout = (FrameLayout) findViewById(R.id.fl_main);
+                frameLayout.setVisibility(View.VISIBLE);
+            }
+        });
         recyclerView.setAdapter(adapter);
 
         //点击email图标事件
@@ -116,6 +110,16 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 goSendEmailActivity();
+                for(int i = 0; i < idList.size(); i++){
+                    emailList.add(mSchoolyearbooks.get(idList.get(i)).getEmail());
+                }
+                idList.clear();
+
+                //将选择框隐藏
+                adapter.checkTemp = false;
+                adapter.notifyDataSetChanged();
+                FrameLayout frameLayout = (FrameLayout) findViewById(R.id.fl_main);
+                frameLayout.setVisibility(View.GONE);
             }
         });
 
@@ -124,18 +128,25 @@ public class MainActivity extends AppCompatActivity{
         deleteImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(MainActivity.this, "点击了删除按钮", Toast.LENGTH_SHORT).show();
-                NoteDelete noteDelete = new NoteDelete(phoneList);
-                //onResume();
+                //Toast.makeText(MainActivity.this, "点击了删除按钮" + idList.size(), Toast.LENGTH_SHORT).show();
+
+                //删除选中
+                for(int i = 0; i < idList.size(); i++){
+//                    Log.d("hahaha",mSchoolyearbooks.get(idList.get(i)).getEmail()+"");
+                    DataSupport.deleteAll(SchoolyearbookBean.class, "name = ?", mSchoolyearbooks.get(idList.get(i)).getName());
+                    mSchoolyearbooks.remove(idList.get(i) - i);
+                }
+                adapter.notifyDataSetChanged();
+                idList.clear();
+                recyclerView.scrollToPosition(0);
             }
         });
 
-        addImageView = (ImageView) findViewById(R.id.iv_add_icon);
-        addImageView.setOnClickListener(new View.OnClickListener() {
-
+        addImaeView = (ImageView) findViewById(R.id.iv_add_icon);
+        addImaeView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showPopupMenu(addImageView);
+                showPopupMenu(addImaeView);
             }
         });
 
@@ -166,8 +177,6 @@ public class MainActivity extends AppCompatActivity{
 
             }
         });
-
-
     }
 
     private void showPopupMenu(ImageView addImageView) {
@@ -189,7 +198,7 @@ public class MainActivity extends AppCompatActivity{
                         exportExcel();
                         break;
                     case R.id.photo_item:
-                        Toast.makeText(MainActivity.this, "导出jpg成功，请在文件管理器中查看", Toast.LENGTH_SHORT).show();
+                        exportPhoto();
                         break;
                     default:
                         break;
@@ -209,8 +218,6 @@ public class MainActivity extends AppCompatActivity{
     // 进入群发邮件状态
     private void goSendEmailActivity(){
         Intent intent = new Intent(MainActivity.this, SendEmailActivity.class);
-        emailList = new ArrayList<>();
-        emailList.add("1009224322@qq.com");
         emailList.add("1009224322@qq.com");
         ArrayList<String> Test = (ArrayList<String>) emailList;
         intent.putStringArrayListExtra("email",Test);
@@ -225,6 +232,8 @@ public class MainActivity extends AppCompatActivity{
                 CheckBox checkBox = view1.findViewById(R.id.cb_note);
                 checkBox.setVisibility(View.GONE);
             }
+            adapter.checkTemp = false;
+            adapter.notifyDataSetChanged();
             checkboxflag = false;
             FrameLayout frameLayout = (FrameLayout) findViewById(R.id.fl_main);
             frameLayout.setVisibility(View.GONE);
@@ -241,8 +250,15 @@ public class MainActivity extends AppCompatActivity{
     // 导出excel
     private void exportExcel(){
         try {
-            ExcelPresenter.writeExcel("StartDust");
-            Toast.makeText(MainActivity.this, "导出excel成功，请在文件管理器中查看", Toast.LENGTH_SHORT).show();
+            if (ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                //进行授权
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+            } else {
+                //已经授权
+                ExcelPresenter.writeExcel("/Schoolyearbook");
+                Toast.makeText(MainActivity.this, "导出excel成功，请在文件管理器中查看", Toast.LENGTH_SHORT).show();
+            }
         } catch (WriteException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -250,4 +266,66 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
+    @Override
+    public void myOnClick(View view) {
+        int idNote = (int) view.getTag();
+        idList.add(idNote);
+    }
+
+    public void backCreateDate(){
+        mSchoolyearbooks = DataSupport.findAll(SchoolyearbookBean.class);
+    }
+
+    private  void exportPhoto() {
+
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            //进行授权
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 2);
+
+        } else {
+            //已经授权
+            Bitmap bitmap = ImagePresenter.getScreenshotFromRecyclerView(recyclerView);
+            ImagePresenter.saveImage(bitmap, "/Schoolyearbook");
+            Toast.makeText(MainActivity.this, "导出纪念相册成功，请在文件管理器中查看", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case 1:
+                if (!(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    Toast.makeText(this, "权限被拒绝了", Toast.LENGTH_SHORT).show();
+                } else {
+                    //权限申请成功
+                    Toast.makeText(this, "权限申请成功", Toast.LENGTH_SHORT).show();
+                    try {
+                        ExcelPresenter.writeExcel("/Schoolyearbook");
+                        Toast.makeText(MainActivity.this, "导出excel成功，请在文件管理器中查看", Toast.LENGTH_SHORT).show();
+                    } catch (WriteException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+                break;
+            case 2:
+                if (!(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    Toast.makeText(this, "权限被拒绝了", Toast.LENGTH_SHORT).show();
+                } else {
+                    //权限申请成功
+                    Toast.makeText(this, "权限申请成功", Toast.LENGTH_SHORT).show();
+                    Bitmap bitmap = ImagePresenter.getScreenshotFromRecyclerView(recyclerView);
+                    ImagePresenter.saveImage(bitmap, "/Schoolyearbook");
+                    Toast.makeText(MainActivity.this, "导出纪念相册成功，请在文件管理器中查看", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            default:
+                break;
+        }
+    }
 }
