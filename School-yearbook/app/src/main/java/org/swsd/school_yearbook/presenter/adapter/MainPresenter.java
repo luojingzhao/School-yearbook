@@ -42,7 +42,7 @@ public class MainPresenter implements IPresenter{
             }
             if(str.equals(string.toString())){
                 allList=DataSupport.select("id","name","address","phone",
-                        "wechat","email","qq","signature")
+                        "wechat","email","qq","signature","avatarPath")
                         .where("name=?",nameString).find(SchoolyearbookBean.class);
             }
         }
