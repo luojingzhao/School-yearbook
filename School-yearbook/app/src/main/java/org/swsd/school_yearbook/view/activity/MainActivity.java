@@ -19,16 +19,19 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
-
 import org.litepal.crud.DataSupport;
 import org.swsd.school_yearbook.R;
 import org.swsd.school_yearbook.model.bean.SchoolyearbookBean;
+import org.swsd.school_yearbook.presenter.ExcelPresenter;
 import org.swsd.school_yearbook.presenter.NoteDelete;
 import org.swsd.school_yearbook.presenter.adapter.MainPresenter;
 import org.swsd.school_yearbook.presenter.adapter.NoteAdapter;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import jxl.write.WriteException;
 
 
 /**
@@ -60,6 +63,7 @@ public class MainActivity extends AppCompatActivity{
     private List<String> phoneList;
 
     //选中的note的email集合
+    //private ArrayList<String> emailList;
     private List<String> emailList;
     private ImageView addImageView;
     private EditText et_search;
@@ -122,7 +126,7 @@ public class MainActivity extends AppCompatActivity{
             public void onClick(View view) {
                 Toast.makeText(MainActivity.this, "点击了删除按钮", Toast.LENGTH_SHORT).show();
                 NoteDelete noteDelete = new NoteDelete(phoneList);
-                onResume();
+                //onResume();
             }
         });
 
@@ -179,11 +183,10 @@ public class MainActivity extends AppCompatActivity{
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()){
                     case R.id.add_item:
-                        /*goAddNewPerson();*/
-                        goSendEmailActivity();
+                        goAddNewPerson();
                         break;
                     case R.id.excel_item:
-                        Toast.makeText(MainActivity.this, "导出excel成功，请在文件管理器中查看", Toast.LENGTH_SHORT).show();
+                        exportExcel();
                         break;
                     case R.id.photo_item:
                         Toast.makeText(MainActivity.this, "导出jpg成功，请在文件管理器中查看", Toast.LENGTH_SHORT).show();
@@ -206,6 +209,11 @@ public class MainActivity extends AppCompatActivity{
     // 进入群发邮件状态
     private void goSendEmailActivity(){
         Intent intent = new Intent(MainActivity.this, SendEmailActivity.class);
+        emailList = new ArrayList<>();
+        emailList.add("1009224322@qq.com");
+        emailList.add("1009224322@qq.com");
+        ArrayList<String> Test = (ArrayList<String>) emailList;
+        intent.putStringArrayListExtra("email",Test);
         startActivity(intent);
     }
 
@@ -228,6 +236,18 @@ public class MainActivity extends AppCompatActivity{
 
     public void initData(){
 
+    }
+
+    // 导出excel
+    private void exportExcel(){
+        try {
+            ExcelPresenter.writeExcel("StartDust");
+            Toast.makeText(MainActivity.this, "导出excel成功，请在文件管理器中查看", Toast.LENGTH_SHORT).show();
+        } catch (WriteException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

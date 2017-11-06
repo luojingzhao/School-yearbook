@@ -21,13 +21,12 @@ public class SendEmailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_send_email);
+        eMailList = getIntent().getStringArrayListExtra("email");
         eMailContent = (EditText) findViewById(R.id.email_content);
         final Button sendEmail = (Button) findViewById(R.id.send_email);
         sendEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                eMailList.add("1009224322@qq.com");
-                eMailList.add("1354895960@qq.com");
                 sendEmail.setClickable(false);
                 Toast.makeText(SendEmailActivity.this, "发送邮件中，请不要进行任何操作", Toast.LENGTH_SHORT).show();
                 sendEmailAll();
@@ -37,10 +36,11 @@ public class SendEmailActivity extends AppCompatActivity {
 
     private void sendEmailAll(){
         for (String address: eMailList) {
+            Toast.makeText(this, "正在发给  " + address, Toast.LENGTH_SHORT).show();
             sendEmailOne(address);
         }
     }
-    // 发送右键Presenter
+    // 发送邮件Presenter
     private void sendEmailOne(final String eMailAddress){
         // 启用一个线程 发送邮件
         new Thread(new Runnable() {
