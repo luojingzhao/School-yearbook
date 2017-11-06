@@ -2,6 +2,8 @@ package org.swsd.school_yearbook.presenter.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,7 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.litepal.crud.DataSupport;
@@ -55,6 +57,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder>
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         View noteView;
+        ImageView photoView;
         TextView noteName;
         TextView noteAddress;
         TextView notePhone;
@@ -74,6 +77,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder>
             noteQQ = view.findViewById(R.id.tv_note_qq);
             noteSignature = view.findViewById(R.id.tv_note_signature);
             noteCheckBox = view.findViewById(R.id.cb_note);
+            photoView=view.findViewById(R.id.iv_note_header);
         }
     }
 
@@ -124,9 +128,10 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder>
                 String email = book.getEmail();
                 String qq = book.getQq();
                 String signature = book.getSignature();
+                String AvatarPath=book.getAvatarPath();
 
                 SchoolyearbookBean newSchoolyearbook
-                        = new SchoolyearbookBean(id,name,address,phone,wechat,email,qq,signature);
+                        = new SchoolyearbookBean(id,name,address,phone,wechat,email,qq,signature,AvatarPath);
 
                 Intent intent = new Intent(mContext, NewPersonActivity.class);
                 Bundle bundle = new Bundle();
@@ -155,6 +160,39 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder>
         holder.noteCheckBox.setTag(position);
         holder.noteCheckBox.setChecked(false);
         holder.noteCheckBox.setVisibility(checkTemp ? View.VISIBLE:View.GONE);
+
+        //加载头像
+        String imagePath=schoolyearbookBean.getAvatarPath();
+        if(imagePath!=null){
+            BitmapFactory.Options options = new BitmapFactory.Options();//解析位图的附加条件
+            options.inJustDecodeBounds = true;// 不去解析位图，只获取位图头文件信息
+            Bitmap bitmap= BitmapFactory.decodeFile(imagePath,options);
+            holder.photoView.setImageBitmap(bitmap);
+            int btwidth = options.outWidth;//获取图片的宽度
+            int btheight = options.outHeight;//获取图片的高度
+
+            int dx = btwidth/200;//获取水平方向的缩放比例
+            int dy = btheight/200;//获取垂直方向的缩放比例
+
+            int s = 1;//设置默认缩放比例
+
+            //如果是水平方向
+            if (dx>dy&&dy>1) {
+                s = dx;
+            }
+
+            //如果是垂直方向
+            if (dy>dx&&dx>1) {
+                s = dy;
+            }
+            options.inSampleSize = s;//设置图片缩放比例
+            options.inJustDecodeBounds = false;//真正解析位图
+            //把图片的解析条件options在创建的时候带上
+            bitmap = BitmapFactory.decodeFile(imagePath, options);
+            holder.photoView.setImageBitmap(bitmap);//设置图片
+        }else{
+            holder.photoView.setImageResource(R.drawable.filemiss);
+        }
 
         if(mOnItemOnClickListener!=null){
             holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
