@@ -21,18 +21,19 @@
 
         <TextView
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/note_name"
-            />
+            android:gravity="center"
+            android:layout_weight="0.17" />
         <EditText
             android:id="@+id/et_contact_name"
             android:layout_marginRight="10dp"
             android:layout_marginTop="20dp"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="2"/>
+            android:layout_weight="1.71"/>
     </LinearLayout>
     <!--地址-->
     <LinearLayout android:layout_width="match_parent"
@@ -44,6 +45,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/note_address"
+            android:gravity="center"
             />
         <EditText
             android:id="@+id/et_contact_address"
@@ -62,7 +64,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/note_phone"
-            />
+            android:gravity="center"
+            android:layout_weight="0.20" />
         <EditText
             android:id="@+id/et_contact_phone"
             android:layout_marginRight="10dp"
@@ -80,7 +83,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/note_wechat"
-            />
+            android:gravity="center"
+            android:layout_weight="0.20" />
         <EditText
             android:id="@+id/et_contact_wechat"
             android:layout_marginRight="10dp"
@@ -98,7 +102,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/note_email"
-            />
+            android:gravity="center"
+            android:layout_weight="0.20" />
         <EditText
             android:id="@+id/et_contact_email"
             android:layout_marginRight="10dp"
@@ -116,7 +121,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/note_qq"
-            />
+            android:gravity="center"
+            android:layout_weight="0.27" />
         <EditText
             android:id="@+id/et_contact_qq"
             android:layout_marginRight="10dp"
@@ -134,6 +140,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/note_signature"
+            android:gravity="center"
             />
         <EditText
             android:id="@+id/et_contact_signature"

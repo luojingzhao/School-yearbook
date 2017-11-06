@@ -211,12 +211,11 @@ public class NewPersonActivity extends AppCompatActivity {
         }
     }
 
+    // 判断是否是已有联系人
     private void initBundle(){
         if(getIntent().getExtras() == null){
-            Toast.makeText(this, "正在新建联系人", Toast.LENGTH_SHORT).show();
         }else{
             isNewPerson = false;
-            Toast.makeText(this, "正在修改联系人", Toast.LENGTH_SHORT).show();
         }
 
         if (!isNewPerson){
@@ -232,11 +231,9 @@ public class NewPersonActivity extends AppCompatActivity {
     private void addNewPerson(){
         if(isNewPerson){
             insertYearBook();
-            Toast.makeText(this, "新建联系人成功", Toast.LENGTH_SHORT).show();
         }
         else {
             upDatePerson();
-            Toast.makeText(this, "修改联系人成功", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -258,7 +255,7 @@ public class NewPersonActivity extends AppCompatActivity {
         signature = eT_signature.getText().toString();
         qq = eT_qq.getText().toString();
 
-        //测试
+        // 判断输入的 姓名，邮箱，电话是否合法
         if(!name.equals("") && isMobil(phone) && isEmail(email)){
             SchoolyearbookBean person = new SchoolyearbookBean();
             person.setName(name);
@@ -270,7 +267,7 @@ public class NewPersonActivity extends AppCompatActivity {
             person.setEmail(email);
             person.setAvatarPath(imagePath);
             person.save();
-            Toast.makeText(this, "保存数据成功" + imagePath, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "新建联系人成功", Toast.LENGTH_SHORT).show();
             finish();
         }
         else{
@@ -326,6 +323,7 @@ public class NewPersonActivity extends AppCompatActivity {
         tempDB.setName(eT_signature.getText().toString());
         tempDB.setAvatarPath(imagePath);
         tempDB.save();
+        Toast.makeText(this, "修改联系人成功", Toast.LENGTH_SHORT).show();
     }
 
     // 重新装载数据
