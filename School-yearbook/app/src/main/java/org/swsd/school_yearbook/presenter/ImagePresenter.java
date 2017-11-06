@@ -34,7 +34,7 @@ public class ImagePresenter {
      * description:  获取得到RecyclerView的长截图
      * version:   :  1.0
      */
-    public Bitmap getScreenshotFromRecyclerView(RecyclerView view) {
+    public static  Bitmap getScreenshotFromRecyclerView(RecyclerView view) {
 
         RecyclerView.Adapter adapter = view.getAdapter();
         Bitmap bigBitmap = null;
