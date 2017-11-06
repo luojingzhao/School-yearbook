@@ -72,8 +72,8 @@ public class MainActivity extends AppCompatActivity{
     protected void onResume() {
         super.onResume();
 
-        adapter = new NoteAdapter(getApplicationContext());
-        recyclerView.setAdapter(adapter);
+       adapter = new NoteAdapter(getApplicationContext());
+       recyclerView.setAdapter(adapter);
 
         Log.d(TAG, "zxzhang" + mSchoolyearbooks.toString() + String.valueOf(mSchoolyearbooks.size()));
         //长按监听
