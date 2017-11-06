@@ -149,7 +149,6 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.Callb
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 //编辑框内容改变前
-
             }
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
