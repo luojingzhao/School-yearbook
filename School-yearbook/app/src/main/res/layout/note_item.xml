@@ -25,6 +25,7 @@
                 android:visibility="gone" />
 
             <ImageView
+                android:layout_marginLeft="10dp"
                 android:id="@+id/iv_note_header"
                 android:layout_width="110dp"
                 android:layout_height="150dp"
