@@ -34,10 +34,9 @@ public class SchoolyearbookBean extends DataSupport implements Serializable{
         this.signature = signature;
     }
 
-    public  SchoolyearbookBean(){
+    public SchoolyearbookBean(){
 
     }
-
     public int getId() {
         return id;
     }

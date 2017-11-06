@@ -61,6 +61,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder>
         mSchoolyearbookList = DataSupport.findAll(SchoolyearbookBean.class);
     }
 
+
     @Override
     public boolean onLongClick(View view) {
         return false;
@@ -101,6 +102,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder>
                         = new SchoolyearbookBean(id,name,address,phone,wechat,email,qq,signature);
 
                 Intent intent = new Intent(mContext, NewPersonActivity.class);
+
                 Bundle bundle = new Bundle();
                 //通过bundle传输数据
                 bundle.putSerializable("note",newSchoolyearbook);
@@ -108,6 +110,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder>
                 mContext.startActivity(intent);
             }
         });
+
         return holder;
     }
 

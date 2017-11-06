@@ -22,11 +22,7 @@ public class SendEmailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_send_email);
         eMailList = getIntent().getStringArrayListExtra("email");
-        for (String string : eMailList) {
-            Toast.makeText(this, string, Toast.LENGTH_SHORT).show();
-        }
         eMailContent = (EditText) findViewById(R.id.email_content);
-
         final Button sendEmail = (Button) findViewById(R.id.send_email);
         sendEmail.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -40,10 +36,11 @@ public class SendEmailActivity extends AppCompatActivity {
 
     private void sendEmailAll(){
         for (String address: eMailList) {
+            Toast.makeText(this, "正在发给  " + address, Toast.LENGTH_SHORT).show();
             sendEmailOne(address);
         }
     }
-    // 发送右键Presenter
+    // 发送邮件Presenter
     private void sendEmailOne(final String eMailAddress){
         // 启用一个线程 发送邮件
         new Thread(new Runnable() {
