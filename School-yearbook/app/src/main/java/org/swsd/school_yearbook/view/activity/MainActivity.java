@@ -10,7 +10,6 @@ import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,13 +22,11 @@ import org.litepal.crud.DataSupport;
 import org.swsd.school_yearbook.R;
 import org.swsd.school_yearbook.model.bean.SchoolyearbookBean;
 import org.swsd.school_yearbook.presenter.ExcelPresenter;
-import org.swsd.school_yearbook.presenter.NoteDelete;
 import org.swsd.school_yearbook.presenter.adapter.MainPresenter;
 import org.swsd.school_yearbook.presenter.adapter.NoteAdapter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import jxl.write.WriteException;
 
 
@@ -152,6 +149,7 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.Callb
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 //编辑框内容改变前
+
             }
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -173,8 +171,6 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.Callb
 
             }
         });
-
-
     }
 
     private void showPopupMenu(ImageView addImageView) {
