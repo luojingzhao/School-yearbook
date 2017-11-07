@@ -16,6 +16,7 @@ import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -73,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.Callb
     @Override
     protected void onResume() {
         super.onResume();
+        mSchoolyearbooks.addAll(DataSupport.findAll(SchoolyearbookBean.class));
         adapter.notifyDataSetChanged();
     }
 
@@ -83,15 +85,10 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.Callb
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView = (RecyclerView) findViewById(R.id.rv_main);
         recyclerView.setLayoutManager(layoutManager);
-        mSchoolyearbooks = DataSupport.findAll(SchoolyearbookBean.class);
-        adapter = new NoteAdapter(getApplicationContext(), mSchoolyearbooks, this);
-        recyclerView.setAdapter(adapter);
-
-        //initData();
         mSchoolyearbooks = new ArrayList<>();
-        mSchoolyearbooks.clear();
-        mSchoolyearbooks = DataSupport.findAll(SchoolyearbookBean.class);
-        adapter = new NoteAdapter(getApplicationContext(), mSchoolyearbooks, this);
+        mSchoolyearbooks.addAll(DataSupport.findAll(SchoolyearbookBean.class));
+        adapter = new NoteAdapter(this, mSchoolyearbooks, this);
+
         adapter.setOnItemClickListener(new NoteAdapter.OnItemOnClickListener() {
             @Override
             public void onItemLongOnClick(View view, int pos) {
@@ -132,13 +129,11 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.Callb
 
                 //删除选中
                 for(int i = 0; i < idList.size(); i++){
-//                    Log.d("hahaha",mSchoolyearbooks.get(idList.get(i)).getEmail()+"");
-                    DataSupport.deleteAll(SchoolyearbookBean.class, "name = ?", mSchoolyearbooks.get(idList.get(i)).getName());
+                    DataSupport.deleteAll(SchoolyearbookBean.class, "name = ?", mSchoolyearbooks.get(idList.get(i) - i).getName());
                     mSchoolyearbooks.remove(idList.get(i) - i);
                 }
                 adapter.notifyDataSetChanged();
                 idList.clear();
-                recyclerView.scrollToPosition(0);
             }
         });
 
@@ -244,7 +239,13 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.Callb
     }
 
     public void initData(){
-
+        for(int i = 0; i < 3; i++){
+            SchoolyearbookBean person = new SchoolyearbookBean();
+            person.setName("hahhah");
+            person.setPhone("13107609771");
+            person.setEmail("1241138441@qq.com");
+            person.save();
+        }
     }
 
     // 导出excel
@@ -274,6 +275,7 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.Callb
 
     public void backCreateDate(){
         mSchoolyearbooks = DataSupport.findAll(SchoolyearbookBean.class);
+
     }
 
     private  void exportPhoto() {
