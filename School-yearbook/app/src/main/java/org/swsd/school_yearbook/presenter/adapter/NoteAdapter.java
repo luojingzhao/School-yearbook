@@ -5,10 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.telecom.Call;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,12 +13,9 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import org.litepal.crud.DataSupport;
 import org.swsd.school_yearbook.R;
 import org.swsd.school_yearbook.model.bean.SchoolyearbookBean;
 import org.swsd.school_yearbook.view.activity.NewPersonActivity;
-
 import java.util.List;
 
 /**
@@ -51,7 +45,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder>
     //回调接口
     public interface Callback
     {
-        public void myOnClick(View view);
+         void myOnClick(View view);
     }
 
 
@@ -141,7 +135,6 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder>
                 mContext.startActivity(intent);
             }
         });
-
 
         return holder;
     }
