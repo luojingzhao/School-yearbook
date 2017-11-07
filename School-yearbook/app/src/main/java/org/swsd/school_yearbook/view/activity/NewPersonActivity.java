@@ -336,6 +336,5 @@ public class NewPersonActivity extends AppCompatActivity {
         eT_signature.setText(tempDB.getSignature());
         eT_email.setText(tempDB.getEmail());
         Toast.makeText(this, "添加成功", Toast.LENGTH_SHORT).show();
-        finish();
     }
 }
