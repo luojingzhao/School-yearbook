@@ -32,7 +32,7 @@ public class ExcelPresenter {
      * description:  数据库内容写入Excel
      * version:   :  1.0
      */
-    public static void writeExcel(String dirName) throws WriteException,IOException {
+    public static void  writeExcel(String dirName) throws WriteException,IOException {
 
 
         String filepath = Environment.getExternalStorageDirectory() + dirName;

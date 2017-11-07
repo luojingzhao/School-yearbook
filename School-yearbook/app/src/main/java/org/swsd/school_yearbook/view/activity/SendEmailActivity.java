@@ -2,6 +2,7 @@ package org.swsd.school_yearbook.view.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -36,7 +37,7 @@ public class SendEmailActivity extends AppCompatActivity {
 
     private void sendEmailAll(){
         for (String address: eMailList) {
-            Toast.makeText(this, "正在发给  " + address, Toast.LENGTH_SHORT).show();
+            Log.d("熊立强", "sendEmailAll: " + address);
             sendEmailOne(address);
         }
     }
@@ -61,6 +62,5 @@ public class SendEmailActivity extends AppCompatActivity {
                 }
             }
         }).start();
-
     }
 }

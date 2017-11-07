@@ -25,6 +25,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.EditText;
@@ -316,13 +317,16 @@ public class NewPersonActivity extends AppCompatActivity {
 
     private void upDatePerson() {
         tempDB.setName(eT_name.getText().toString());
-        tempDB.setName(eT_address.getText().toString());
-        tempDB.setName(eT_phone.getText().toString());
-        tempDB.setName(eT_wechat.getText().toString());
-        tempDB.setName(eT_email.getText().toString());
-        tempDB.setName(eT_qq.getText().toString());
-        tempDB.setName(eT_signature.getText().toString());
-        tempDB.save();
+        tempDB.setAddress(eT_address.getText().toString());
+        tempDB.setPhone(eT_phone.getText().toString());
+        tempDB.setWechat(eT_wechat.getText().toString());
+        tempDB.setEmail(eT_email.getText().toString());
+        tempDB.setQq(eT_qq.getText().toString());
+        tempDB.setSignature(eT_signature.getText().toString());
+        Log.d("熊立强", "upDatePerson: " + tempDB.getId());
+        String mId = Integer.toString(tempDB.getId());
+        tempDB.updateAll("id = ?",mId);
+        finish();
     }
 
     // 重新装载数据

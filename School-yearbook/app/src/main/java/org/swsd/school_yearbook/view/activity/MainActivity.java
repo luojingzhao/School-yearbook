@@ -1,9 +1,15 @@
 
 package org.swsd.school_yearbook.view.activity;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
@@ -19,10 +25,12 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
+
 import org.litepal.crud.DataSupport;
 import org.swsd.school_yearbook.R;
 import org.swsd.school_yearbook.model.bean.SchoolyearbookBean;
 import org.swsd.school_yearbook.presenter.ExcelPresenter;
+import org.swsd.school_yearbook.presenter.ImagePresenter;
 import org.swsd.school_yearbook.presenter.NoteDelete;
 import org.swsd.school_yearbook.presenter.adapter.MainPresenter;
 import org.swsd.school_yearbook.presenter.adapter.NoteAdapter;
@@ -64,7 +72,7 @@ public class MainActivity extends AppCompatActivity{
 
     //选中的note的email集合
     //private ArrayList<String> emailList;
-    private List<String> emailList;
+    private List<String> emailList = new ArrayList<>();
     private ImageView addImageView;
     private EditText et_search;
 
@@ -186,10 +194,12 @@ public class MainActivity extends AppCompatActivity{
                         goAddNewPerson();
                         break;
                     case R.id.excel_item:
+                        Toast.makeText(MainActivity.this, "eeeexxxccceeell", Toast.LENGTH_SHORT).show();
                         exportExcel();
                         break;
                     case R.id.photo_item:
-                        Toast.makeText(MainActivity.this, "导出jpg成功，请在文件管理器中查看", Toast.LENGTH_SHORT).show();
+                        exportPhoto();
+                        //Toast.makeText(MainActivity.this, "导出jpg成功，请在文件管理器中查看", Toast.LENGTH_SHORT).show();
                         break;
                     default:
                         break;
@@ -209,9 +219,10 @@ public class MainActivity extends AppCompatActivity{
     // 进入群发邮件状态
     private void goSendEmailActivity(){
         Intent intent = new Intent(MainActivity.this, SendEmailActivity.class);
-        emailList = new ArrayList<>();
-        emailList.add("1009224322@qq.com");
-        emailList.add("1009224322@qq.com");
+        emailList.add("hello");
+        for (String string:emailList) {
+            Log.d("熊立强", "goSendEmailActivity: 参数为" + string);
+        }
         ArrayList<String> Test = (ArrayList<String>) emailList;
         intent.putStringArrayListExtra("email",Test);
         startActivity(intent);
@@ -241,13 +252,108 @@ public class MainActivity extends AppCompatActivity{
     // 导出excel
     private void exportExcel(){
         try {
-            ExcelPresenter.writeExcel("StartDust");
-            Toast.makeText(MainActivity.this, "导出excel成功，请在文件管理器中查看", Toast.LENGTH_SHORT).show();
+            if (ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                //进行授权
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+            } else {
+                //已经授权
+                ExcelPresenter.writeExcel("zxzhang");
+                Toast.makeText(MainActivity.this, "导出excel成功，请在文件管理器中查看", Toast.LENGTH_SHORT).show();
+            }
         } catch (WriteException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+    private  void exportPhoto() {
+
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            //进行授权
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 2);
+            Toast.makeText(this,"haha",Toast.LENGTH_SHORT).show();
+        } else {
+            //已经授权
+            Bitmap bitmap = ImagePresenter.getScreenshotFromRecyclerView(recyclerView);
+            ImagePresenter.saveImage(bitmap, "zxzhang");
+
+            Toast.makeText(MainActivity.this, "导出纪念相册成功，请在文件管理器中查看", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case 1:
+                if (!(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    Toast.makeText(this, "权限被拒绝了", Toast.LENGTH_SHORT).show();
+                } else {
+                    //权限申请成功
+                    Toast.makeText(this, "权限申请成功", Toast.LENGTH_SHORT).show();
+                    try {
+                        ExcelPresenter.writeExcel("zxzhang");
+                    } catch (WriteException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                break;
+            case 2:
+                if (!(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    Toast.makeText(this, "权限被拒绝了", Toast.LENGTH_SHORT).show();
+                } else {
+                    //权限申请成功
+                    Toast.makeText(this, "权限申请成功", Toast.LENGTH_SHORT).show();
+                    Bitmap bitmap = ImagePresenter.getScreenshotFromRecyclerView(recyclerView);
+                    ImagePresenter.saveImage(bitmap, "zxzhang");
+                    Toast.makeText(MainActivity.this, "导出纪念相册成功，请在文件管理器中查看", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+
+    /* @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case 1:
+                if (!(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    Toast.makeText(this, "权限被拒绝了", Toast.LENGTH_SHORT).show();
+                } else {
+                    //权限申请成功
+                    Toast.makeText(this, "权限申请成功", Toast.LENGTH_SHORT).show();
+                    try {
+                        ExcelPresenter.writeExcel("Schoolyearbook");
+                    } catch (WriteException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                break;
+            case 2:
+                if (!(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    Toast.makeText(this, "权限被拒绝了", Toast.LENGTH_SHORT).show();
+                } else {
+                    //权限申请成功
+                    Toast.makeText(this, "权限申请成功", Toast.LENGTH_SHORT).show();
+                    Bitmap bitmap = ImagePresenter.getScreenshotFromRecyclerView(recyclerView);
+                    ImagePresenter.saveImage(bitmap, "Schoolyearbook");
+                    Toast.makeText(MainActivity.this, "导出纪念相册成功，请在文件管理器中查看", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            default:
+                break;
+        }
+    }*/
 
 }
