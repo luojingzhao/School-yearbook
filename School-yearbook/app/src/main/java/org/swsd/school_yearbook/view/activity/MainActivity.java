@@ -16,6 +16,7 @@ import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,7 +39,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jxl.write.WriteException;
-
 
 /**
  * author     :  骆景钊
@@ -63,7 +63,6 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.Callb
     private NoteAdapter adapter;
 
     private static final String TAG = "MainActivity";
-
     private ImageView addImageView;
     private EditText et_search;
     //选中的note的id集合
@@ -196,6 +195,7 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.Callb
                         goAddNewPerson();
                         break;
                     case R.id.excel_item:
+                        Toast.makeText(MainActivity.this, "eeeexxxccceeell", Toast.LENGTH_SHORT).show();
                         exportExcel();
                         break;
                     case R.id.photo_item:
@@ -219,8 +219,13 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.Callb
     // 进入群发邮件状态
     private void goSendEmailActivity(){
         Intent intent = new Intent(MainActivity.this, SendEmailActivity.class);
-        emailList.add("1009224322@qq.com");
+/*        emailList.add("hello");
+        for (String string:emailList) {
+            Log.d("熊立强", "goSendEmailActivity: 参数为" + string);
+        }*/
+       // emailList.add("1009224322@qq.com");
         ArrayList<String> Test = (ArrayList<String>) emailList;
+        testEmailList();
         intent.putStringArrayListExtra("email",Test);
         startActivity(intent);
     }
@@ -312,7 +317,6 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.Callb
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-
                 }
                 break;
             case 2:
@@ -328,6 +332,16 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.Callb
                 break;
             default:
                 break;
+        }
+    }
+
+    /*
+    *  author ： 熊立强
+    *  fun ： 打印emailList
+     */
+    private void testEmailList(){
+        for ( String string: emailList) {
+            Log.d("熊立强", "获取MainActivity的emaillist: " + string);
         }
     }
 }

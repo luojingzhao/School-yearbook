@@ -1,15 +1,10 @@
 package org.swsd.school_yearbook.presenter;
 
-import android.Manifest;
-import android.app.Activity;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Environment;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.util.LruCache;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -34,6 +29,7 @@ public class ImagePresenter {
      * description:  获取得到RecyclerView的长截图
      * version:   :  1.0
      */
+
     public static  Bitmap getScreenshotFromRecyclerView(RecyclerView view) {
 
         RecyclerView.Adapter adapter = view.getAdapter();
@@ -115,19 +111,5 @@ public class ImagePresenter {
     }
 
 
-    /**
-     * author     :  张昭锡
-     * time       :  2017/11/04
-     * description:  动态获取写权限
-     * version:   :  1.0
-     */
-    private void requestPermission(Activity activity,RecyclerView view){
-        //表示未授权时
-        if (ContextCompat.checkSelfPermission(activity,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            //进行授权
-            ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-        }
-    }
 
 }

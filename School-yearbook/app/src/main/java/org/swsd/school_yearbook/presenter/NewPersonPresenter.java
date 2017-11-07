@@ -21,8 +21,4 @@ public class NewPersonPresenter implements IPresenter{
     public void detachView() {
 
     }
-
-
-
-
 }
