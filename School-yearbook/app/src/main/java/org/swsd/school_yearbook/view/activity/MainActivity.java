@@ -161,12 +161,14 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.Callb
                 //编辑框内容改变时
                 if(s.length()==0){
                     allList=mainPresenter.getAllList();
-                    NoteAdapter newAdapter = new NoteAdapter(getApplicationContext(),allList);
-                    recyclerView.setAdapter(newAdapter);
+                    mSchoolyearbooks.clear();
+                    mSchoolyearbooks.addAll(allList);
+                    adapter.notifyDataSetChanged();
                 }else{
                     selectedList=mainPresenter.toSelect(s.toString());
-                    NoteAdapter newAdapter = new NoteAdapter(getApplicationContext(),selectedList);
-                    recyclerView.setAdapter(newAdapter);
+                    mSchoolyearbooks.clear();
+                    mSchoolyearbooks.addAll( selectedList);
+                    adapter.notifyDataSetChanged();
                 }
             }
 
