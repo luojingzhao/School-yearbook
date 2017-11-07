@@ -49,6 +49,7 @@ public class NewPersonActivity extends AppCompatActivity {
     private EditText eT_signature;
     private boolean isNewPerson = true;
     private SchoolyearbookBean tempDB;
+    private String imagePath=null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -127,7 +128,6 @@ public class NewPersonActivity extends AppCompatActivity {
 
     @TargetApi(19)
     private void handleImageOnKitKat(Intent data){
-        String imagePath=null;
         Uri uri=data.getData();
         //如果是document类型的Uri，，则通过document id处理
         if(DocumentsContract.isDocumentUri(this,uri)){
@@ -177,12 +177,12 @@ public class NewPersonActivity extends AppCompatActivity {
 
     //显示图片
     private void displayImage(String imagePath){
+        ImageView picture;
+        picture=(ImageView) findViewById(R.id.person_photo);
         if(imagePath!=null){
             BitmapFactory.Options options = new BitmapFactory.Options();//解析位图的附加条件
             options.inJustDecodeBounds = true;// 不去解析位图，只获取位图头文件信息
             Bitmap bitmap= BitmapFactory.decodeFile(imagePath,options);
-            ImageView picture;
-            picture=(ImageView) findViewById(R.id.person_photo);
             picture.setImageBitmap(bitmap);
             int btwidth = options.outWidth;//获取图片的宽度
             int btheight = options.outHeight;//获取图片的高度
@@ -207,16 +207,16 @@ public class NewPersonActivity extends AppCompatActivity {
             bitmap = BitmapFactory.decodeFile(imagePath, options);
             picture.setImageBitmap(bitmap);//设置图片
         }else{
+            picture.setImageResource(R.drawable.filemiss);
             Toast.makeText(this,"failed to get image",Toast.LENGTH_SHORT).show();
         }
     }
 
+    // 判断是否是已有联系人
     private void initBundle(){
         if(getIntent().getExtras() == null){
-            Toast.makeText(this, "正在新建联系人", Toast.LENGTH_SHORT).show();
         }else{
             isNewPerson = false;
-            Toast.makeText(this, "正在修改联系人", Toast.LENGTH_SHORT).show();
         }
 
         if (!isNewPerson){
@@ -232,11 +232,9 @@ public class NewPersonActivity extends AppCompatActivity {
     private void addNewPerson(){
         if(isNewPerson){
             insertYearBook();
-            Toast.makeText(this, "新建联系人成功", Toast.LENGTH_SHORT).show();
         }
         else {
             upDatePerson();
-            Toast.makeText(this, "修改联系人成功", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -258,7 +256,7 @@ public class NewPersonActivity extends AppCompatActivity {
         signature = eT_signature.getText().toString();
         qq = eT_qq.getText().toString();
 
-        //测试
+        // 判断输入的 姓名，邮箱，电话是否合法
         if(!name.equals("") && isMobil(phone) && isEmail(email)){
             SchoolyearbookBean person = new SchoolyearbookBean();
             person.setName(name);
@@ -268,8 +266,9 @@ public class NewPersonActivity extends AppCompatActivity {
             person.setSignature(signature);
             person.setQq(qq);
             person.setEmail(email);
+            person.setAvatarPath(imagePath);
             person.save();
-            Toast.makeText(this, "保存数据成功", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "新建联系人成功", Toast.LENGTH_SHORT).show();
             finish();
         }
         else{
@@ -323,10 +322,12 @@ public class NewPersonActivity extends AppCompatActivity {
         tempDB.setEmail(eT_email.getText().toString());
         tempDB.setQq(eT_qq.getText().toString());
         tempDB.setSignature(eT_signature.getText().toString());
+        tempDB.setAvatarPath(imagePath);
         Log.d("熊立强", "upDatePerson: " + tempDB.getId());
         String mId = Integer.toString(tempDB.getId());
         tempDB.updateAll("id = ?",mId);
         finish();
+        Toast.makeText(this, "修改联系人成功", Toast.LENGTH_SHORT).show();
     }
 
     // 重新装载数据
@@ -338,5 +339,6 @@ public class NewPersonActivity extends AppCompatActivity {
         eT_qq.setText(tempDB.getQq());
         eT_signature.setText(tempDB.getSignature());
         eT_email.setText(tempDB.getEmail());
+        Toast.makeText(this, "添加成功", Toast.LENGTH_SHORT).show();
     }
 }

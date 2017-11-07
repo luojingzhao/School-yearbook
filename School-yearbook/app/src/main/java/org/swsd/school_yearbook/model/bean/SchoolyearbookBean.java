@@ -23,7 +23,7 @@ public class SchoolyearbookBean extends DataSupport implements Serializable{
     private String avatarPath;
 
     public SchoolyearbookBean(int id,String name,String address,String phone,String wechat,
-                              String email, String qq,String signature){
+                              String email, String qq,String signature,String avatarPath){
         this.id = id;
         this.name = name;
         this.address = address;
@@ -32,6 +32,7 @@ public class SchoolyearbookBean extends DataSupport implements Serializable{
         this.email = email;
         this.qq = qq;
         this.signature = signature;
+        this.avatarPath=avatarPath;
     }
 
     public SchoolyearbookBean(){

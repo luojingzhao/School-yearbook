@@ -7,10 +7,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import org.swsd.school_yearbook.R;
 import org.swsd.school_yearbook.presenter.SendEmail;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,8 +35,8 @@ public class SendEmailActivity extends AppCompatActivity {
 
     private void sendEmailAll(){
         for (String address: eMailList) {
-            Log.d("熊立强", "sendEmailAll: " + address);
             sendEmailOne(address);
+            Log.d("熊立强", "成功发送邮件给： " + address);
         }
     }
     // 发送邮件Presenter

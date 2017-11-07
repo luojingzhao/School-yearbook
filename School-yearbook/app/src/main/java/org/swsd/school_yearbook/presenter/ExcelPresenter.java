@@ -56,7 +56,7 @@ public class ExcelPresenter {
         WritableSheet sheet = wwb.createSheet("同学信息",0);
 
         //添加Excel表头
-        String[] title = {"姓名","家庭住址","电话","微信","邮箱","QQ","个性语言"};
+        String[] title = {"序号","姓名","家庭住址","电话","微信","邮箱","QQ","个性语言"};
         Label label;
         for (int i = 0;i < title.length;i++){
             label = new Label(i,0,title[i]);
