@@ -16,7 +16,6 @@ import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,6 +24,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
+
 import org.litepal.crud.DataSupport;
 import org.swsd.school_yearbook.R;
 import org.swsd.school_yearbook.model.bean.SchoolyearbookBean;
@@ -32,9 +32,11 @@ import org.swsd.school_yearbook.presenter.ExcelPresenter;
 import org.swsd.school_yearbook.presenter.ImagePresenter;
 import org.swsd.school_yearbook.presenter.adapter.MainPresenter;
 import org.swsd.school_yearbook.presenter.adapter.NoteAdapter;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
 import jxl.write.WriteException;
 
 
@@ -125,14 +127,15 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.Callb
         deleteImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Toast.makeText(MainActivity.this, "点击了删除按钮" + idList.size(), Toast.LENGTH_SHORT).show();
 
                 //删除选中
                 for(int i = 0; i < idList.size(); i++){
-                    DataSupport.deleteAll(SchoolyearbookBean.class, "name = ?", mSchoolyearbooks.get(idList.get(i) - i).getName());
+                    DataSupport.deleteAll(SchoolyearbookBean.class, "name = ?",
+                            mSchoolyearbooks.get(idList.get(i) - i).getName());
                     mSchoolyearbooks.remove(idList.get(i) - i);
                 }
                 adapter.notifyDataSetChanged();
+                Toast.makeText(MainActivity.this, "成功删除" + idList.size()+"个联系人", Toast.LENGTH_SHORT).show();
                 idList.clear();
             }
         });
@@ -157,12 +160,12 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.Callb
                 //编辑框内容改变时
                 if(s.length()==0){
                     allList=mainPresenter.getAllList();
-                    NoteAdapter adapter = new NoteAdapter(getApplicationContext(),allList);
-                    recyclerView.setAdapter(adapter);
+                    NoteAdapter newAdapter = new NoteAdapter(getApplicationContext(),allList);
+                    recyclerView.setAdapter(newAdapter);
                 }else{
                     selectedList=mainPresenter.toSelect(s.toString());
-                    NoteAdapter adapter = new NoteAdapter(getApplicationContext(),selectedList);
-                    recyclerView.setAdapter(adapter);
+                    NoteAdapter newAdapter = new NoteAdapter(getApplicationContext(),selectedList);
+                    recyclerView.setAdapter(newAdapter);
                 }
             }
 
@@ -239,13 +242,7 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.Callb
     }
 
     public void initData(){
-        for(int i = 0; i < 3; i++){
-            SchoolyearbookBean person = new SchoolyearbookBean();
-            person.setName("hahhah");
-            person.setPhone("13107609771");
-            person.setEmail("1241138441@qq.com");
-            person.save();
-        }
+
     }
 
     // 导出excel

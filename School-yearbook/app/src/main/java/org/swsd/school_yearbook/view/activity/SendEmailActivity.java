@@ -6,10 +6,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import org.swsd.school_yearbook.R;
 import org.swsd.school_yearbook.presenter.SendEmail;
-
 import java.util.ArrayList;
 import java.util.List;
 

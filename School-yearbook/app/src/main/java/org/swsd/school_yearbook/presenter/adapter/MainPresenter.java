@@ -8,11 +8,9 @@
 package org.swsd.school_yearbook.presenter.adapter;
 
 import android.content.Context;
-
 import org.litepal.crud.DataSupport;
 import org.swsd.school_yearbook.model.bean.SchoolyearbookBean;
 import org.swsd.school_yearbook.presenter.IPresenter;
-
 import java.util.ArrayList;
 import java.util.List;
 
