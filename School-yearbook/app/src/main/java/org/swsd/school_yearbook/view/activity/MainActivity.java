@@ -76,6 +76,7 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.Callb
     @Override
     protected void onResume() {
         super.onResume();
+        mSchoolyearbooks.clear();
         mSchoolyearbooks.addAll(DataSupport.findAll(SchoolyearbookBean.class));
         adapter.notifyDataSetChanged();
     }
