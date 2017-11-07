@@ -27,7 +27,7 @@ public class MainPresenter implements IPresenter{
     //选择函数
     public List<SchoolyearbookBean> toSelect(String string) {
 
-        List<SchoolyearbookBean> allList = new ArrayList<>();
+        List<SchoolyearbookBean> allList ;
 
         allList = DataSupport.select("id", "name", "address", "phone",
                 "wechat", "email", "qq", "signature", "avatarPath")
