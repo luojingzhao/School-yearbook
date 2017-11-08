@@ -71,6 +71,8 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.Callb
     //选中的email的集合
     List<String> emailList = new ArrayList<>();
 
+    List<Boolean> checkList = new ArrayList<>();
+
 
     @Override
     protected void onResume() {
@@ -108,17 +110,22 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.Callb
         emailImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                goSendEmailActivity();
-                for(int i = 0; i < idList.size(); i++){
-                    emailList.add(mSchoolyearbooks.get(idList.get(i)).getEmail());
-                }
-                idList.clear();
+                if(!idList.isEmpty()){
+                    for(int i = 0; i < idList.size(); i++){
+                        emailList.add(mSchoolyearbooks.get(idList.get(i)).getEmail());
+                    }
+                    idList.clear();
+                    emailList.clear();
+                    goSendEmailActivity();
+                    //将选择框隐藏
+                    adapter.checkTemp = false;
+                    adapter.notifyDataSetChanged();
+                    FrameLayout frameLayout = (FrameLayout) findViewById(R.id.fl_main);
+                    frameLayout.setVisibility(View.GONE);
+                }else{
+                    Toast.makeText(MainActivity.this, "未选中任何选项", Toast.LENGTH_SHORT).show();
 
-                //将选择框隐藏
-                adapter.checkTemp = false;
-                adapter.notifyDataSetChanged();
-                FrameLayout frameLayout = (FrameLayout) findViewById(R.id.fl_main);
-                frameLayout.setVisibility(View.GONE);
+                }
             }
         });
 
@@ -129,14 +136,19 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.Callb
             public void onClick(View view) {
 
                 //删除选中
-                for(int i = 0; i < idList.size(); i++){
-                    DataSupport.deleteAll(SchoolyearbookBean.class, "name = ?",
-                            mSchoolyearbooks.get(idList.get(i) - i).getName());
-                    mSchoolyearbooks.remove(idList.get(i) - i);
+                if(!idList.isEmpty()){
+                    for(int i = 0; i < idList.size(); i++){
+                        DataSupport.deleteAll(SchoolyearbookBean.class, "name = ?",
+                                mSchoolyearbooks.get(idList.get(i) - i).getName());
+                        mSchoolyearbooks.remove(idList.get(i) - i);
+                    }
+                    adapter.notifyDataSetChanged();
+                    Toast.makeText(MainActivity.this, "成功删除" + idList.size()+"个联系人", Toast.LENGTH_SHORT).show();
+                    idList.clear();
+                }else{
+                    Toast.makeText(MainActivity.this, "未选中任何选项", Toast.LENGTH_SHORT).show();
                 }
-                adapter.notifyDataSetChanged();
-                Toast.makeText(MainActivity.this, "成功删除" + idList.size()+"个联系人", Toast.LENGTH_SHORT).show();
-                idList.clear();
+
             }
         });
 
@@ -277,6 +289,18 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.Callb
         int idNote = (int) view.getTag();
         idList.add(idNote);
     }
+
+    @Override
+    public void deleteOnClick(View view) {
+        int idNote = (int) view.getTag();
+        for (int i = 0; i < idList.size(); i++) {
+            if (idList.get(i).equals(idNote)) {
+                idList.remove(idNote);
+                break;
+            }
+        }
+    }
+
 
     public void backCreateDate(){
         mSchoolyearbooks = DataSupport.findAll(SchoolyearbookBean.class);

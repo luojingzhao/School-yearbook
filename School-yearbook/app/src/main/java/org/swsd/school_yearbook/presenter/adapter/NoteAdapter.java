@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +16,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import org.swsd.school_yearbook.R;
 import org.swsd.school_yearbook.model.bean.SchoolyearbookBean;
+import org.swsd.school_yearbook.view.activity.MainActivity;
 import org.swsd.school_yearbook.view.activity.NewPersonActivity;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -39,6 +43,8 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder>
         if (b)
         {
             callback.myOnClick(compoundButton);
+        }else{
+            callback.deleteOnClick(compoundButton);
         }
     }
 
@@ -46,6 +52,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder>
     public interface Callback
     {
          void myOnClick(View view);
+         void deleteOnClick(View view);
     }
 
 
@@ -105,38 +112,8 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder>
 
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.note_item, parent, false);
         final ViewHolder holder = new ViewHolder(view);
-
-        //点击主页跳转到编辑页
-        holder.noteView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int position = holder.getAdapterPosition();
-
-                SchoolyearbookBean book = mSchoolyearbookList.get(position);
-
-                int id = book.getId();
-                String name = book.getName();
-                String address = book.getAddress();
-                String phone = book.getPhone();
-                String wechat = book.getWechat();
-                String email = book.getEmail();
-                String qq = book.getQq();
-                String signature = book.getSignature();
-                String AvatarPath=book.getAvatarPath();
-
-                SchoolyearbookBean newSchoolyearbook
-                        = new SchoolyearbookBean(id,name,address,phone,wechat,email,qq,signature,AvatarPath);
-
-                Intent intent = new Intent(mContext, NewPersonActivity.class);
-                Bundle bundle = new Bundle();
-                //通过bundle传输数据
-                bundle.putSerializable("note",newSchoolyearbook);
-                intent.putExtras(bundle);
-                mContext.startActivity(intent);
-            }
-        });
-
         return holder;
+
     }
 
     @Override
@@ -153,6 +130,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder>
         holder.noteCheckBox.setTag(position);
         holder.noteCheckBox.setChecked(false);
         holder.noteCheckBox.setVisibility(checkTemp ? View.VISIBLE:View.GONE);
+
 
         //加载头像
         String imagePath=schoolyearbookBean.getAvatarPath();
@@ -196,6 +174,36 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder>
                 }
             });
         }
+
+        //点击主页跳转到编辑页
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int position = holder.getAdapterPosition();
+
+                SchoolyearbookBean book = mSchoolyearbookList.get(position);
+
+                int id = book.getId();
+                String name = book.getName();
+                String address = book.getAddress();
+                String phone = book.getPhone();
+                String wechat = book.getWechat();
+                String email = book.getEmail();
+                String qq = book.getQq();
+                String signature = book.getSignature();
+                String AvatarPath=book.getAvatarPath();
+
+                SchoolyearbookBean newSchoolyearbook
+                        = new SchoolyearbookBean(id,name,address,phone,wechat,email,qq,signature,AvatarPath);
+
+                Intent intent = new Intent(mContext, NewPersonActivity.class);
+                Bundle bundle = new Bundle();
+//                //通过bundle传输数据
+                bundle.putSerializable("note",newSchoolyearbook);
+                intent.putExtras(bundle);
+                mContext.startActivity(intent);
+            }
+        });
 
     }
 
