@@ -115,8 +115,8 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.Callb
                         emailList.add(mSchoolyearbooks.get(idList.get(i)).getEmail());
                     }
                     idList.clear();
-                    emailList.clear();
                     goSendEmailActivity();
+                    emailList.clear();
                     //将选择框隐藏
                     adapter.checkTemp = false;
                     adapter.notifyDataSetChanged();
