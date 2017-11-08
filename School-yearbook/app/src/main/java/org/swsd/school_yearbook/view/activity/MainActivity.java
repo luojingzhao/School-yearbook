@@ -195,7 +195,6 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.Callb
                         goAddNewPerson();
                         break;
                     case R.id.excel_item:
-                        Toast.makeText(MainActivity.this, "eeeexxxccceeell", Toast.LENGTH_SHORT).show();
                         exportExcel();
                         break;
                     case R.id.photo_item:
