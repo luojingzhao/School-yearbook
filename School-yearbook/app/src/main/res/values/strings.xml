@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">School-yearbook</string>
+    <string name="main_title">同学录</string>
+    <string name="note_name">姓名：</string>
+    <string name="note_address">家庭住址：</string>
+    <string name="note_phone">电话：</string>
+    <string name="note_wechat">微信：</string>
+    <string name="note_email">邮箱：</string>
+    <string name="note_qq">QQ：</string>
+    <string name="note_signature">个性签名：</string>
+    <string name="menu_add">新增</string>
+    <string name="menu_excel">导出Eecel</string>
+    <string name="menu_photo">导出相册</string>
+    <string name="email_hint">在这里输入群发内容</string>
+    <string name="email_send">群发邮件</string>
 </resources>
